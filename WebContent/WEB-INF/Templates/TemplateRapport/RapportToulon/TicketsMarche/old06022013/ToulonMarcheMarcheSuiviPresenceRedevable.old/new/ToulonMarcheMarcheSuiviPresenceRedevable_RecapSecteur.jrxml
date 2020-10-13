@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ToulonMarcheMarcheSuiviPresenceRedevable_Facture" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="codesecteur" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(85)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="jourDebutMois" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date("08/01/2012")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="jourDebutMoisSuivant" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date("09/01/2012")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT   DISTINCT   	
+	(SELECT datediff( 
+		(SELECT MAX(dateControle) FROM marchesuiviredevable  
+			WHERE codesecteur = $P{codesecteur}		
+			AND `dateControle` >= $P{jourDebutMois}
+    			AND `dateControle` < $P{jourDebutMoisSuivant}
+    		) , 
+		$P{jourDebutMois})+1) AS NbJourDepuisDebutMois,
+	(SELECT COUNT(*) FROM marchesuiviredevable  
+		WHERE etat = 'absent'
+		AND codesecteur = $P{codesecteur}
+		AND `dateControle` >= $P{jourDebutMois}
+    		AND `dateControle` < $P{jourDebutMoisSuivant}
+	) as nbAbsent,
+	(SELECT COUNT(*) FROM marchesuiviredevable  
+		WHERE etat = 'present'
+		AND codesecteur = $P{codesecteur}
+		AND `dateControle` >= $P{jourDebutMois}
+    		AND `dateControle` < $P{jourDebutMoisSuivant}
+	) as nbPresent,
+	(SELECT COUNT(DISTINCT dateControle ) FROM marchesuiviredevable  		
+		WHERE codesecteur = $P{codesecteur}
+		AND `dateControle` >= $P{jourDebutMois}
+    		AND `dateControle` < $P{jourDebutMoisSuivant}
+	) as nbControl
+
+FROM 	
+   	marchesuiviredevable msr   
+    
+WHERE 
+	codesecteur = $P{codesecteur} 
+	AND msr.`dateControle` >= $P{jourDebutMois}
+    	AND msr.`dateControle` < $P{jourDebutMoisSuivant}]]>
+	</queryString>
+	<field name="NbJourDepuisDebutMois" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nbAbsent" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nbPresent" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nbControl" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DateDuJour" class="java.util.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="194" height="20"/>
+				<textElement markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Récapitulatif Secteur " + $P{codesecteur}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="19" width="262" height="2"/>
+			</line>
+			<staticText>
+				<reportElement x="305" y="4" width="138" height="17">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[version 10/08/2012 IR 3.5.2]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="80" width="305" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre d'absences : " + $F{nbAbsent}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="305" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre de présences : " + $F{nbPresent}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="530" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre de jours depuis le début du mois : " + $F{NbJourDepuisDebutMois}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="530" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre de jours non contrôlés : " + ($F{NbJourDepuisDebutMois}.intValue()- $F{nbPresent}.intValue() -  $F{nbAbsent}.intValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="305" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre de contrôles : " + $F{nbControl}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

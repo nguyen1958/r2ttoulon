@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesAnnulationsAnnuelToulon_SR_details_RecapMontantDesignation" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="dateDebut" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/01/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFin" class="java.lang.String">
+		<defaultValueExpression><![CDATA["31/12/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numeroBatch" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(242)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+i.`idImputation` AS imputation_idImputation,
+i.`designation` AS imputation_designation,
+f.`montantTotal` AS facture_montantTotal
+
+FROM imputation i,batchrapportcomptable br,
+lignefacture lf,facture f,article a,
+elementfacturation ef,emplacementgeneral eg,
+redevable r,payement p,typepayement tp,lignepayement lp
+WHERE br.`idBatchRapportComptable` = 1427
+#La période
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+#Pour trouver les paiements remisés
+AND p.idTypePayement = tp.idTypePayement
+AND tp.typepayement like "remise"
+AND lp.`idPayement`= p.`idPayement`
+AND f.`idFacture` = lp.`idFacture`
+AND f.`etat` LIKE "Valide"
+AND p.`etat` LIKE "Valide"
+AND i.`libelle` NOT IN ('ETALAGE', 'TLPE')
+
+AND f.`numeroFacture` = lf.`idFacture`
+
+AND lf.`idArticle` = a.`id_article`
+AND a.`id_elementfacturation` = ef.`numero`
+AND ef.`numeroEmplacement` = eg.`numero`
+AND f.`idClient` = r.`numRedevable`
+AND i.`anneeExercice` = br.`annee`
+AND i.`idImputation` = lf.`idImputation`
+AND f.`idClient` = r.`numRedevable`]]>
+	</queryString>
+	<field name="imputation_idImputation" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_montantTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="MontantDesignation" class="java.lang.Double" resetType="Group" resetGroup="GrandeTaxe" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+	</variable>
+	<group name="GrandeTaxe">
+		<groupExpression><![CDATA[$F{imputation_idImputation}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<textField pattern="#,## €0.00">
+					<reportElement x="255" y="2" width="120" height="15"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantDesignation}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1" y="2" width="250" height="15"/>
+					<textElement markup="none">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total - " + $F{imputation_designation} + " :"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="419" y="1" width="125" height="17">
+						<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<text><![CDATA[Version 28/09/2012 IR 3.5.2]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band/>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

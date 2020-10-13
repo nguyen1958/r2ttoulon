@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ToulonMarcheMarcheSuiviPresenceRedevable_Facture" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="numeroRedevable" class="java.lang.String"/>
+	<parameter name="numRedevable" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2556)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebutMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/05/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFinMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["30/05/2012"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT  
+	f.idClient, f.typeTaxe, r.numRedevable,f.idFacture,
+	f.solde,f.montantTotal,f.numeroFacture,
+	i.cycleFacturation,EG.numeroEmplacementPersonalise,
+	p.datePayement, p.etat
+FROM 
+	facture f, `imputation` i , redevable r ,emplacementgeneral EG,
+	lignepayement lp, payement p 
+WHERE 
+	f.etat LIKE'valide' 
+	AND ( i.libelle ='MARCHE_MENSUEL' OR i.libelle ='MARCHE_TRIMESTRIEL') 
+	AND f.anneeEx = EXTRACT(YEAR FROM NOW()) 
+	AND f.typeTaxe = i.libelle 
+	AND f.idClient = r.numRedevable 
+	AND r.numRedevable=EG.numredevable 
+	AND r.numRedevable = $P{numRedevable}
+#Pour trouver la date de paiement	
+	AND lp.idFacture = f.idFacture
+	AND p.idPayement = lp.idPayement
+ORDER BY f.idClient;]]>
+	</queryString>
+	<field name="idClient" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="typeTaxe" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idFacture" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="solde" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="montantTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numeroFacture" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cycleFacturation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numeroEmplacementPersonalise" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datePayement" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="0" width="81" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emplacement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="98" y="0" width="57" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° facture]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="177" y="0" width="59" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Redevance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="262" y="0" width="27" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Etat]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="398" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="314" y="0" width="69" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Paiement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="398" y="4" width="138" height="17">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[version 08/05/2012 IR 3.5.2]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="98" y="1" width="57" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroFacture}==null?"":$F{numeroFacture}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="1" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{etat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="1" width="66" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroEmplacementPersonalise}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="1" width="59" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{montantTotal}==null?new Double(0.00).toString():$F{montantTotal} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="1" width="84" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{datePayement}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

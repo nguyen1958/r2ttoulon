@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ToulonMarcheMarcheSuiviPresenceRedevable_Redevable" pageWidth="735" pageHeight="802" columnWidth="735" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="jourDebutMois" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date("08/01/12")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="jourDebutMoisSuivant" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date("09/01/12")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="batchrapportcomptable_periode" class="java.lang.String">
+		<defaultValueExpression><![CDATA["31/08/2012"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT   DISTINCT   	
+   	 msr.`numRedevable`
+	,msr.codesecteur,
+    	mrr.numeroemplacement,
+    	r.nomRedevable,
+    	r.prenom
+FROM 
+   	marchesuiviredevable msr   
+
+LEFT OUTER JOIN marcherecuredevance mrr
+	ON  mrr.`numeroredevable` = msr.`numRedevable`
+	  
+LEFT OUTER JOIN `redevable` r
+	ON  r.`numRedevable`    = msr.`numRedevable`
+
+WHERE 	msr.`dateControle` >= $P{jourDebutMois}
+    	AND msr.`dateControle` <= ADDDATE(STR_TO_DATE($P{batchrapportcomptable_periode}, '%d/%m/%Y'), INTERVAL 1 DAY )
+	AND msr.`etat` = 'absent'
+ORDER BY msr.`codeSecteur`, msr.`numRedevable`]]>
+	</queryString>
+	<field name="numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codesecteur" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numeroemplacement" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="Secteur" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{codesecteur}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<textField>
+					<reportElement x="0" y="0" width="156" height="20"/>
+					<textElement markup="none">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Secteur " + $F{codesecteur}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="0" y="23" width="735" height="2"/>
+				</line>
+				<staticText>
+					<reportElement x="169" y="6" width="138" height="17">
+						<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<text><![CDATA[version 06/09/2012 IR 3.5.2]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="0" width="271" height="44"/>
+					<subreportParameter name="jourDebutMoisSuivant">
+						<subreportParameterExpression><![CDATA[$P{jourDebutMoisSuivant}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="batchrapportcomptable_periode">
+						<subreportParameterExpression><![CDATA[$P{batchrapportcomptable_periode}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="codesecteur">
+						<subreportParameterExpression><![CDATA[$F{codesecteur}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="jourDebutMois">
+						<subreportParameterExpression><![CDATA[$P{jourDebutMois}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "ToulonMarcheMarcheSuiviPresenceRedevable_RecapSecteur.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="67" splitType="Prevent">
+			<textField>
+				<reportElement x="265" y="32" width="138" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{prenom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="116" y="32" width="138" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomRedevable}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="265" y="11" width="138" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prénom]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="11" width="138" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nom]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="11" width="53" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Redevable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="11" width="41" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Secteur]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="47" y="32" width="53" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numRedevable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="32" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{codesecteur}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="31" width="706" height="1"/>
+			</line>
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="418" y="11" width="288" height="51"/>
+				<subreportParameter name="jourDebutMoisSuivant">
+					<subreportParameterExpression><![CDATA[$P{jourDebutMoisSuivant}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="batchrapportcomptable_periode">
+					<subreportParameterExpression><![CDATA[$P{batchrapportcomptable_periode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codesecteur">
+					<subreportParameterExpression><![CDATA[$F{codesecteur}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numRedevable">
+					<subreportParameterExpression><![CDATA[$F{numRedevable}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="jourDebutMois">
+					<subreportParameterExpression><![CDATA[$P{jourDebutMois}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "ToulonMarcheMarcheSuiviPresenceRedevable_AbsenceRedevable.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

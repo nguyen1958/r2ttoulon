@@ -1,0 +1,32 @@
+dans r2tws
+
+SELECT DISTINCT article.*,elementfacturation.numeroEmplacement,bareme.libelle 
+FROM emplacementgeneral,article,elementfacturation,bareme 
+WHERE enactivite='enActivite' and  
+emplacementgeneral.numero=elementfacturation.numeroEmplacement and 
+article.id_elementfacturation=elementfacturation.numero and 
+article.codebareme=bareme.code and 
+bareme.anexercice=article.anexercice and  
+article.anexercice='2017' and
+emplacementgeneral.numero=8215;
+
+dans R2t
+
+SELECT enactivite,article.*,bareme.prixUnit, bareme.prorata,bareme.periodicite, bareme.anExercice,
+imputation.libelle,bareme.libelle,elementfacturation.numero as numEfacturation,
+bareme.prixPeriode1,bareme.prixPeriode2,bareme.prixPeriode3,
+bareme.prixPeriode4,bareme.prixPeriode5,bareme.dureeunitaire,
+bareme.uniteDeTravail,bareme.typeArrondi, 
+emplacementgeneral.numero as numEmplacement, 
+emplacementgeneral.codeSecteur, emplacementgeneral.numRedevable,
+emplacementgeneral.codeType  
+FROM article,elementfacturation,bareme,emplacementgeneral,imputation
+WHERE article.id_elementfacturation= elementfacturation.numero
+AND article.source= 'normal'
+AND imputation.idImputation = bareme.idImputation 
+AND imputation.anneeExercice='2017'
+AND article.codebareme= bareme.code
+AND bareme.anExercice='2017'
+AND elementfacturation.numeroEmplacement= emplacementgeneral.numero
+AND  emplacementgeneral.numero=8215
+Order by article.etat;

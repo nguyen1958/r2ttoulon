@@ -1,0 +1,5 @@
+Ce template pemet de générer une facture de relance
+
+Modif 01/09/2012
+----------------
+Changement de la date du rapport en haut. La date à mettre et la date de création de la facture :dateCreation

@@ -1,0 +1,15 @@
+Modification du rapport ListeDesAnnulationsAnnuelToulon
+---------------------------------------------------------
+
+Le 30/12/2013
+---------------
+Reprise des sous rapports du rapport trimestriel
+ListeDesRemisesToulon_SR_details_RecapMontantDesignation
+ListeDesRemisesToulon_SR_details
+
+On enlève dans les 2 sous rapport le filtre
+AND i.`libelle` NOT IN ('ETALAGE', 'TLPE')
+
+A jout de $P{numeroBatch} dans la requête du sous rapport 
+ListeDesRemisesToulon_SR_details_RecapMontantDesignation
+

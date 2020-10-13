@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeQuittancesJournalierToulon_SR_Total Espece" pageWidth="538" pageHeight="802" columnWidth="538" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="DatedeArrete" class="java.lang.String">
+		<defaultValueExpression><![CDATA["20/10/2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numQuittance" class="java.lang.String">
+		<defaultValueExpression><![CDATA["860624"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT SUM(l.`montantPayement`) AS sommeA
+        	FROM `lignepayement` l,payement p,`typepayement` tp        
+            	WHERE l.idPayement = p.idPayement
+			AND p.idTypePayement = 3
+			AND p.numeroQuittance = $P{numQuittance}
+			AND p.etat LIKE "valide"
+			AND p.datePayement LIKE $P{DatedeArrete}
+			AND p.`idTypePayement` = tp.`idTypePayement`
+			AND tp.`typepayement` not in ('Remise','Exoneration')]]>
+	</queryString>
+	<field name="sommeA" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="sommeatemp" class="java.lang.String">
+		<variableExpression><![CDATA[$F{sommeA}.toString()]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="514" height="17"/>
+			</rectangle>
+			<line>
+				<reportElement x="392" y="0" width="1" height="17"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="392" height="17"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["TOTAL ESPECES :"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Band" pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement isPrintRepeatedValues="false" x="403" y="0" width="107" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{sommeA}==null?new Double(0.00):$F{sommeA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="102" y="11" width="160" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 22/03/2011 IR 3.5.2]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

@@ -1,0 +1,8 @@
+
+C:\Users\paul\Documents>rem @echo off 
+
+C:\Users\paul\Documents>echo 26/12/2016 
+26/12/2016
+
+C:\Users\paul\Documents>echo hello boy 1 
+hello boy 1

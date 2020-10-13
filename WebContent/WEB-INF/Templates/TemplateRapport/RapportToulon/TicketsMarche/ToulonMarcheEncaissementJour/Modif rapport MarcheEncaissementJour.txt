@@ -1,0 +1,9 @@
+Modif du rapport ToulonMarcheEncaissementJour
+---------------------------------------------
+
+
+modif du 03/01/2013
+-------------------
+Sélection du barème correspondant à la date de l'encaissement
+Ajout de la condition
+AND bareme.`anExercice` = SUBSTR($P{DateDuJour},1,4)

@@ -1,0 +1,5 @@
+Les rapports balance Annuel et trimestriel sont identiques sauf pour la période (Un an ou un trimestre)
+La période est déterminée dans dans le rapport principal.
+Les 3 autres rapports sont identiques pour les 2 types de rapport annuel et trimesttriel
+
+On modifie dans annuel et on copie les rapports modifiés dans balance trimestriel

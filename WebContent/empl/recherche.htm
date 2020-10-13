@@ -1,0 +1,67 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="fr">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+</head>
+
+<body background="../images/fond_bleu.gif" topmargin="0">
+
+<div align="center">
+  <table border="0" cellpadding="0" cellspacing="0" width="98%">
+    <tr>
+      <td background="../images/fond_trait.gif" width="15%">
+        <p align="center"><img border="0" src="../images/baremes_graph1.gif" width="40" height="40"></p>
+      </td>
+    <td background="../images/fond_trait.gif">
+      <p align="right"><img border="0" src="../images/baremes_txt.gif" width="450" height="40"></td>
+  </tr>
+  </table>
+</div>
+
+<form method="POST" action="../jsp/emplResultatRecherche.jsp" target="bas">
+  <div align="center">
+    <center>
+    <table border="1" cellpadding="0" cellspacing="0" width="98%" bordercolorlight="#C0C0C0" bordercolordark="#FFFFFF">
+      <tr>
+        <td colspan="4">
+         <p style="margin-left: 5; margin-right: 5"><b>
+         <select size="1" name="sujet">
+           <option value="banque">banque</option>
+           <option value="bareme">bareme</option>
+           <option value="imputation">imputation</option>
+           <option selected value="activiteprofession">AProfession</option>
+         </select>
+         &nbsp;Code&nbsp;<input type="text"  name="code" size="20">
+         &nbsp;Lib&nbsp;<input type="text" name="libele" size="20">
+        </td>
+      </tr>
+      <tr>
+        <td width="25%">
+          &nbsp;
+        </td>
+        <td width="25%" bgcolor="#FFFFFF">
+          <p style="margin-left: 5">
+          <font face="Arial" size="2"><b>Recherche : </b></font>
+          <a href="../entree?action=empl_bareme_resultat_recherche.jsp&choix=consult" target="bas">
+          <!--<a href="../entree?action=empl_gestion_bareme.jsp&choix=modifier&code=16&anExercice=2001" target="bas">-->
+          <img border="0" src="../images/ok.gif" align="absmiddle" width="25" height="25"></a>&nbsp;
+        </td>
+        <td bgcolor="#DFFFEF" width="25%">
+          <p style="margin-left: 5">
+          <font face="Arial" size="2"><b>Création : </b></font>
+          <a target="bas" href="../entree?action=empl_gestion_bareme.jsp&choix=ajouter">
+          <img border="0" src="../images/ok.gif" align="absmiddle" width="25" height="25"></a>
+        </td>
+        <td width="25%">
+          &nbsp;
+        </td>
+      </tr>
+	
+</table>
+</form>
+
+</body>
+
+</html>

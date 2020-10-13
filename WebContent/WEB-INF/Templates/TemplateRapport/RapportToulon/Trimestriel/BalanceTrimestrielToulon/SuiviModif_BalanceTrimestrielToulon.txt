@@ -1,0 +1,19 @@
+BalanceTrimestrielToulon
+---------------------
+f.`typeTaxe` NOT IN ('TLPE','ETALAGE','pub','TICKET_MARCHE')
+
+
+
+Version du 03/08/2012
+Ajout du rejet des taxes non pris en compte dans le sous rapport : BalanceToulon_SR_Totaux
+Rejet des taxes : 'TLPE','ETALAGE'
+
+VERSION de 01/04/2014
+---------------------
+Changement de la propriéte d'affichage du sous rapport de totaux : band summary spilt type de defaut -> immediate
+
+
+VERSION de 09/04/2015
+---------------------
+coorection des toteaux , il manque le paramtre anneeExercice dans les sous toteaux
+

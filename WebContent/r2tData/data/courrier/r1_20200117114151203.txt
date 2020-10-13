@@ -1,0 +1,32 @@
+
+Entête du mail
+--------------------------
+Email : 1
+
+Corps du mail
+--------------------------
+Déclarant :  AS CONSTRUCTION
+Adresse :23 rue des Lilas
+Téléphone :06 48 00 41 61 
+Ville :AUBERVILLIERS
+Secteur :ESPACES VERTS
+Numero :16
+Rue :RUE ALBERT CAMUS
+Description :ligne1.................
+ligne2............
+ligne3...........
+.
+
+//Post header content-type=application/json
+
+{
+	"declarant":"Debora agnès",
+	"adresse":"20 rue chancelier",
+	"tel":"0102030405",
+	"mail":"Dagnès@gmail.com",
+	"commentaire":"ssssss",
+	"numvoie":"50",
+	"secteur":"assainissement",
+	"ville":"villetaneuse",
+	"rue":"michelet"
+}

@@ -1,0 +1,64 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Recherche TR</title>
+</head>
+
+<body background="../images/fond_bleu.gif" topmargin="0">
+
+<div align="center">
+  <div align="center">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td background="../images/fond_trait.gif" width="15%">
+        <p align="center"><img border="0" src="../images/imputation_graph.gif" width="60" height="40"></p>
+      </td>
+    <td background="../images/fond_trait.gif"   valign="top">
+      <p align="right"><font face="Arial" size="5">Gestion des textes réglementaires</font></td>
+  </tr>
+  </table>
+</div>
+
+
+
+<form method="POST" action="../entree?action=emplResultatRecherche.jsp" target="bas">
+<input type="hidden" name="sujet" value="textreglementaire">
+  <div align="center">
+    <center>
+    <table border="1" cellpadding="0" cellspacing="0" width="98%" bordercolorlight="#C0C0C0" bordercolordark="#FFFFFF">
+      <tr>
+        <td colspan="4">
+          <p style="margin-left: 5; margin-right: 5">
+          <font size="2" face="Arial"><b>Exercice :</b> </font></b>
+          <input type="text" name="annee" size="4" maxlength=4 value="">
+        </td>
+      </tr>
+      <tr>
+        <td width="25%">
+          &nbsp;
+        </td>
+        <td width="25%" bgcolor="#FFFFFF">
+          <p style="margin-left: 5"><font face="Arial" size="2"><b>Recherche : </b></font>
+          <a href="#" onClick="javascript:document.forms[0].submit();">
+          <img border="0" src="../images/ok.gif" align="absmiddle" width="25" height="25"></a>&nbsp;
+        </td>
+        <td bgcolor="#DFFFEF" width="25%">
+          <p style="margin-left: 5"><font face="Arial" size="2"><b>Création : </b></font>
+          <a target="bas" href="../entree?action=parametre_gestion_textereglementaire.jsp&choix=creer">
+          <img border="0" src="../images/ok.gif" align="absmiddle" width="25" height="25"></a>
+        </td>
+        <td width="25%">
+          &nbsp;
+        </td>
+      </tr>
+    </table>
+    </center>
+  </div>
+</form>
+
+</body>
+
+</html>

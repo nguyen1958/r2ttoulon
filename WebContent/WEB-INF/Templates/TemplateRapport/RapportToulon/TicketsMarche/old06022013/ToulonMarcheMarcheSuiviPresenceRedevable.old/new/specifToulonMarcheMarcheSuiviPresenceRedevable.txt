@@ -1,0 +1,8 @@
+Spécification ToulonMarcheMarcheSuiviPresenceRedevable
+------------------------------------------------------
+
+On rend compte du bilan des absences sur les marchés
+On a dans ce rapport que les redevables ayant des absences
+
+On a la possibilité qu'un redevable ai plusieurs emplacements sur un marché. 
+Pour cette raison j'ai ajouté l'emplacement dans le suivi des absences

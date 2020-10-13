@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoleChgtAdresseRedevable_r2tBordeauxV1" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NumeroBatch" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1437)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateRole" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["12-23-2008"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     redevable.`nomRedevable` AS redevable_nomRedevable,
+     redevable.`adresse1` AS redevable_adresse1,
+     redevable.`adresse2` AS redevable_adresse2,
+     redevable.`adresse3` AS redevable_adresse3,
+     redevable.`rdCedex` AS redevable_rdCedex,
+     redevable.`codePostal` AS redevable_codePostal,
+     redevable.`numRue` AS redevable_numRue,
+     redevable.`ville` AS redevable_ville,
+     redevable.`prenom` AS redevable_prenom,
+     redevable.`civilite` AS redevable_civilite,
+     redevable.`numRedevable` AS redevable_numRedevable,
+     historiqueadresseredevable.`numRue` AS historiqueadresseredevable_numRue,
+     historiqueadresseredevable.`adresse1` AS historiqueadresseredevable_adresse1,
+     historiqueadresseredevable.`adresse2` AS historiqueadresseredevable_adresse2,
+     historiqueadresseredevable.`adresse3` AS historiqueadresseredevable_adresse3,
+     historiqueadresseredevable.`ville` AS historiqueadresseredevable_ville,
+     historiqueadresseredevable.`codePostal` AS historiqueadresseredevable_codePostal,
+     historiqueadresseredevable.`rdCedex` AS historiqueadresseredevable_rdCedex,
+     redevable.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable,
+     (SELECT  parametresmairie.`ville` FROM parametresmairie) AS villemairie
+FROM
+     `redevable` redevable,
+     `facture` facture,
+     `historiqueadresseredevable` historiqueadresseredevable,
+     `batchtraitement` batchtraitement
+WHERE
+     facture.idClient = redevable.numRedevable
+ AND redevable.changementAdresse = 'true'
+ AND facture.etat NOT LIKE 'ANNULEE'
+ AND facture.etat NOT LIKE 'preRefacturation'
+ AND facture.solde NOT LIKE '0'
+ AND facture.idBatchTraitement = batchtraitement.numeroBatchTraitement
+ AND batchtraitement.valide = 'true'
+AND historiqueadresseredevable.idRedevable = redevable.numRedevable
+
+GROUP BY
+     redevable.numRedevable
+ORDER BY
+     redevable.`nomRedevable` ASC]]>
+	</queryString>
+	<field name="redevable_nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_rdCedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_civilite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="historiqueadresseredevable_numRue" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="historiqueadresseredevable_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="historiqueadresseredevable_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="historiqueadresseredevable_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="historiqueadresseredevable_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="historiqueadresseredevable_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="historiqueadresseredevable_rdCedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="villemairie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DateDuJour" class="java.util.Date">
+		<variableExpression><![CDATA[new Date()]]></variableExpression>
+		<initialValueExpression><![CDATA[new Date()]]></initialValueExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="36">
+			<textField>
+				<reportElement x="3" y="5" width="195" height="25"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Mairie de " + $F{villemairie} +
+"\nDirection de la vie locale"]]></textFieldExpression>
+			</textField>
+			<textField pattern="d MMMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-12" x="588" y="5" width="189" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{villemairie} + ", le " +
+DateFormat.getDateInstance(DateFormat.LONG).format(new Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="70">
+			<line>
+				<reportElement key="line-1" stretchType="RelativeToBandHeight" x="54" y="34" width="1" height="36"/>
+			</line>
+			<rectangle>
+				<reportElement key="rectangle-1" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="34" width="782" height="36"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-4" x="58" y="37" width="132" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Nom du redevable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="460" y="37" width="40" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Objet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="724" y="37" width="43" height="31"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Montant
+Cumulé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="206" y="37" width="138" height="16"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Ancienne adresse
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="403" y="37" width="48" height="30"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Numero
+Titre]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" stretchType="RelativeToBandHeight" x="399" y="34" width="1" height="36"/>
+			</line>
+			<line>
+				<reportElement key="line-3" stretchType="RelativeToBandHeight" x="202" y="34" width="1" height="36"/>
+			</line>
+			<line>
+				<reportElement key="line-4" stretchType="RelativeToBandHeight" x="720" y="34" width="1" height="36"/>
+			</line>
+			<line>
+				<reportElement key="line-5" stretchType="RelativeToBandHeight" x="456" y="34" width="1" height="36"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-9" x="3" y="37" width="50" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Référence]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="353" y="37" width="46" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Exercice]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-6" stretchType="RelativeToBandHeight" x="349" y="34" width="1" height="36"/>
+			</line>
+			<line>
+				<reportElement key="line-7" stretchType="RelativeToBandHeight" x="662" y="34" width="1" height="36"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-11" x="666" y="37" width="43" height="31"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Montant]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-18" x="3" y="10" width="778" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Liste des redevables changeant d'adresse RCAR"+"_"+$P{DateRole}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<rectangle>
+				<reportElement key="rectangle-2" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="782" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-15" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="58" y="2" width="139" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{redevable_civilite}.equals("")?"":$F{redevable_civilite} + " ")+
+$F{redevable_nomRedevable}+ " " + $F{redevable_prenom} + "\n" +
+($F{redevable_numRue}.equals("")||$F{redevable_numRue}.equals("0")?"":$F{redevable_numRue} + " ") + 
+($F{redevable_complementNumeroRueRedevable}.equals("")?"":$F{redevable_complementNumeroRueRedevable}+" ") +
+$F{redevable_adresse1} + "\n" +
+($F{redevable_adresse2}.equals("")?"":$F{redevable_adresse2}+"\n")+
+($F{redevable_adresse3}.equals("")?"":$F{redevable_adresse3}+"\n")+
+($F{redevable_codePostal}.equals("")?"":$F{redevable_codePostal}+ " ") +
+($F{redevable_ville}.equals("")?"":$F{redevable_ville} +" ")+
+($F{redevable_rdCedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-9" stretchType="RelativeToBandHeight" x="54" y="0" width="1" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-10" stretchType="RelativeToBandHeight" x="202" y="0" width="1" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-13" stretchType="RelativeToBandHeight" x="349" y="0" width="1" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-8" stretchType="RelativeToBandHeight" x="399" y="0" width="1" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-12" stretchType="RelativeToBandHeight" x="456" y="0" width="1" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-14" stretchType="RelativeToBandHeight" x="662" y="0" width="1" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-11" stretchType="RelativeToBandHeight" x="720" y="0" width="1" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-16" isPrintRepeatedValues="false" x="3" y="2" width="50" height="15"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{redevable_numRedevable}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="351" y="3" width="426" height="13"/>
+				<subreportParameter name="ReferenceRedevable">
+					<subreportParameterExpression><![CDATA[$F{redevable_numRedevable}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NumeroBatch">
+					<subreportParameterExpression><![CDATA[$P{NumeroBatch}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "RoleChgtAdresseRedevableObjet.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" x="208" y="2" width="134" height="14"/>
+				<subreportParameter name="NumRedevable">
+					<subreportParameterExpression><![CDATA[$F{redevable_numRedevable}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "RoleChgtAdresseRedevableAcienneAdresse.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="18">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" positionType="Float" x="326" y="1" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-13" positionType="Float" x="400" y="1" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-12" x="3" y="0" width="178" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 05/11/2009]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Gestionnaire_r2tBordeauxV1" pageWidth="255" pageHeight="141" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="255" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="AnneeExercice" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LeTypeDeTaxe" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Le type de taxe de la fature]]></parameterDescription>
+		<defaultValueExpression><![CDATA["DDV"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     imputation.`nomGestionnaire` AS imputation_nomGestionnaire,
+     imputation.`telGestionnaire` AS imputation_telGestionnaire,
+     imputation.`faxGestionnaire` AS imputation_faxGestionnaire
+FROM
+     `imputation` imputation
+WHERE
+     imputation.anneeExercice = $P{AnneeExercice}
+ AND imputation.libelle = $P{LeTypeDeTaxe}]]>
+	</queryString>
+	<field name="imputation_nomGestionnaire" class="java.lang.String"/>
+	<field name="imputation_telGestionnaire" class="java.lang.String"/>
+	<field name="imputation_faxGestionnaire" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="51">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="0" y="0" width="226" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{imputation_nomGestionnaire}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="0" y="15" width="216" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Poste " +$F{imputation_telGestionnaire}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="0" y="30" width="222" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Fax " + $F{imputation_faxGestionnaire}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-23" x="129" y="38" width="126" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 20-05-2009 v3.43]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

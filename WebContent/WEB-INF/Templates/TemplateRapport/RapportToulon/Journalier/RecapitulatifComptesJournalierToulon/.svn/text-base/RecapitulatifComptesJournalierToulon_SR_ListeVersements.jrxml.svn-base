@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecapitulatifComptesJournalierToulon_subreport1" pageWidth="566" pageHeight="141" columnWidth="566" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="datedeArrete" class="java.lang.String">
+		<defaultValueExpression><![CDATA["21/03/2012"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+    	i.`section`,
+    	i.`designation`,
+	i.libelle,
+    	i.`idImputation` AS imputation_idImputation,
+	(SELECT SUM( l.`montantPayement`)
+		FROM 	`payement` p,`typepayement` tp,
+			`lignepayement` l,`facture` f
+			WHERE 
+				f.`idFacture` = l.`idFacture`
+				AND l.idPayement = p.idPayement
+				AND p.datePayement = $P{datedeArrete}
+				AND f.typeTaxe = i.`libelle`
+				AND p.etat LIKE "valide"
+				AND p.`idTypePayement` = tp.`idTypePayement`
+				AND tp.`typepayement` !="Remise"
+	) AS versementPeriode,
+	(SELECT SUM(l.`montantPayement`)
+		FROM 	`payement` p,`typepayement` tp,
+			`lignepayement` l,`facture` f
+		WHERE
+			f.`idFacture` = l.`idFacture`
+			AND l.idPayement = p.idPayement
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y')<STR_TO_DATE($P{datedeArrete},'%d/%m/%Y')
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y')>=STR_TO_DATE(CONCAT("01/",substring($P{datedeArrete},4,7)),'%d/%m/%Y')
+			AND f.typeTaxe = i.`libelle`
+			AND p.etat LIKE "valide"
+			AND p.`idTypePayement` = tp.`idTypePayement`
+			AND tp.`typepayement` !="Remise"
+	) AS versementAnterieur,
+	(SELECT	SUM(l.`montantPayement`)
+		FROM 	`payement` p,`typepayement` tp,
+			`lignepayement` l,`facture` f
+		WHERE
+			f.`idFacture` = l.`idFacture`
+			AND l.idPayement = p.idPayement
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y')<=STR_TO_DATE($P{datedeArrete},'%d/%m/%Y')
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y')>=STR_TO_DATE(CONCAT("01/",substring($P{datedeArrete},4,7)),'%d/%m/%Y')
+			AND f.typeTaxe = i.`libelle`
+			AND p.etat LIKE "valide"
+			AND p.`idTypePayement` = tp.`idTypePayement`
+			AND tp.`typepayement` !="Remise"
+	) AS totalVersement
+FROM `imputation` i
+WHERE i.anneeExercice LIKE substring($P{datedeArrete},7,4)
+ORDER BY i.`section`]]>
+	</queryString>
+	<field name="section" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="libelle" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_idImputation" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="versementPeriode" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="versementAnterieur" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalVersement" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="section">
+		<groupExpression><![CDATA[$F{section}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<textField>
+					<reportElement x="6" y="5" width="182" height="13"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{section}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="6" y="0" width="182" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="212" y="0" width="84" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{versementPeriode}==null?new Double(0.00):$F{versementPeriode}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="342" y="1" width="95" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{versementAnterieur}==null?new Double(0.00):$F{versementAnterieur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="465" y="0" width="89" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalVersement}==null?new Double(0.00):$F{totalVersement}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+			<staticText>
+				<reportElement x="38" y="17" width="160" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 22/03/2012 IR3.5.2]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

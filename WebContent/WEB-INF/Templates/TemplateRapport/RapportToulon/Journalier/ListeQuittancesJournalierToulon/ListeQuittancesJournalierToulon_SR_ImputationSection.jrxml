@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeQuittancesJournalierToulon_SR_ImputationSection" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="numQ" class="java.lang.String">
+		<defaultValueExpression><![CDATA["123"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DatedeArrete" class="java.lang.String">
+		<defaultValueExpression><![CDATA["02/07/2009"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT im.`idImputation` AS idI, im.`section` AS section,im.`designation`,
+(
+    SELECT SUM(li.`montantPayement`)
+    FROM lignepayement li,imputation im, payement pa, facture fa , `typepayement` tp
+    WHERE li.idPayement = pa.idPayement
+	AND fa.`idFacture` = li.`idFacture`
+	AND fa.`typeTaxe` = im.`libelle` 
+	AND im.idImputation = idI
+	AND im.code = code
+	AND pa.`datePayement` LIKE $P{DatedeArrete}
+	AND pa.`numeroQuittance` = $P{numQ}
+	AND pa.etat LIKE "valide"
+	AND fa.`anneeEx` = im.`anneeExercice`
+	AND pa.`idTypePayement` = tp.`idTypePayement`
+	AND tp.`typepayement` not in ('Remise','Exoneration')
+		
+) AS totalParTypeTaxe,
+(
+    SELECT SUM(li.`montantPayement`)
+    FROM lignepayement li,imputation im, payement pa, facture fa , `typepayement` tp
+    WHERE li.idPayement = pa.idPayement
+	AND fa.`idFacture` = li.`idFacture`
+	AND fa.`typeTaxe` = im.`libelle` 
+	AND pa.`datePayement` LIKE $P{DatedeArrete}
+	AND pa.`numeroQuittance` = $P{numQ}		
+	AND pa.etat LIKE "valide"
+	AND fa.`anneeEx` = im.`anneeExercice`
+	AND pa.`idTypePayement` = tp.`idTypePayement`
+	AND tp.`typepayement` not in ('Remise','Exoneration')
+) AS totalTotal
+FROM lignepayement li,imputation im, payement pa, facture fa , `typepayement` tp
+WHERE   li.idPayement = pa.idPayement
+	AND fa.`idFacture` = li.`idFacture`
+	AND fa.`typeTaxe` = im.`libelle`  
+	AND pa.`datePayement` LIKE $P{DatedeArrete}
+	AND pa.`numeroQuittance` = $P{numQ}	
+	AND pa.etat LIKE "valide"
+	AND fa.`anneeEx` = im.`anneeExercice`
+	AND pa.`idTypePayement` = tp.`idTypePayement`
+	AND tp.`typepayement` not in ('Remise','Exoneration')]]>
+	</queryString>
+	<field name="idI" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="section" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalParTypeTaxe" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalTotal" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="514" height="17"/>
+			</rectangle>
+			<line>
+				<reportElement x="383" y="0" width="1" height="17"/>
+			</line>
+			<textField>
+				<reportElement x="1" y="2" width="30" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{idI}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="32" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="165" y="0" width="1" height="17"/>
+			</line>
+			<textField>
+				<reportElement x="34" y="2" width="130" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{section}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="2" width="215" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="402" y="2" width="110" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalParTypeTaxe}==null?new Double(0.00):$F{totalParTypeTaxe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="514" height="17"/>
+			</rectangle>
+			<line>
+				<reportElement x="165" y="0" width="1" height="17"/>
+			</line>
+			<textField pattern="#,##0.00">
+				<reportElement x="402" y="2" width="110" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalTotal}==null?new Double(0.00):$F{totalTotal}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="32" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="383" y="0" width="1" height="17"/>
+			</line>
+		</band>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="83" y="12" width="160" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 22/03/2011 IR 3.5.2]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesAcomptesTrimestrielToulon_SR_details_redevable" pageWidth="800" pageHeight="802" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numeroFacture" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(2011005913)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+r.`numRedevable` AS redevable_numRedevable,
+r.`nomRedevable` AS redevable_nomRedevable,
+r.`prenom` AS redevable_prenom,
+r.`civilite` AS redevable_civilite,
+r.`numRue` AS redevable_numRue,
+r.`adresse1` AS redevable_adresse1,
+r.`adresse2` AS redevable_adresse2,
+r.`adresse3` AS redevable_adresse3,
+r.`ville` AS redevable_ville,
+r.`rdCedex` AS redevable_rdCedex,
+r.`codePostal` AS redevable_codePostal,
+r.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable,
+
+eg.`raisonSocial` AS emplacementgeneral_raisonSocial,
+eg.`codeSecteur` AS emplacementgeneral_codeSecteur,
+eg.`numRue` AS emplacementgeneral_numRue,
+eg.`adresse1` AS emplacementgeneral_adresse1,
+eg.`adresse2` AS emplacementgeneral_adresse2,
+eg.`adresse3` AS emplacementgeneral_adresse3,
+eg.`codePostal` AS emplacementgeneral_codePostal,
+eg.`ville` AS emplacementgeneral_ville,
+eg.`cedex` AS emplacementgeneral_cedex,
+eg.`complementNumeroRueEmpl` AS emplacementgeneral_complementNumeroRueEmpl,
+eg.`numeroEmplacementPersonalise` AS emplacementgeneral_numeroEmplacementPersonalise,
+
+CAST(eg.`numeroEmplacementPersonalise` AS SIGNED INTEGER) AS emplacementgeneral_numeroEmplacementPersonaliseInt
+
+FROM lignefacture lf, redevable r, emplacementgeneral eg, article a, elementfacturation ef
+
+WHERE lf.`idFacture` = $P{numeroFacture}
+AND a.`id_article` = lf.`idArticle`
+AND ef.`numero` = a.`id_elementfacturation`
+AND eg.`numero` = ef.`numeroEmplacement`
+AND eg.`numRedevable` = r.`numRedevable`
+
+ORDER BY
+emplacementgeneral_codeSecteur ASC,
+redevable_numRedevable ASC,
+emplacementgeneral_numeroEmplacementPersonaliseInt ASC]]>
+	</queryString>
+	<field name="redevable_numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_civilite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_rdCedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_raisonSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codeSecteur" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_cedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_complementNumeroRueEmpl" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numeroEmplacementPersonalise" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numeroEmplacementPersonaliseInt" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="Emplacement">
+		<groupExpression><![CDATA[$F{emplacementgeneral_numeroEmplacementPersonalise}]]></groupExpression>
+		<groupHeader>
+			<band height="36">
+				<textField>
+					<reportElement x="0" y="1" width="400" height="34"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Emplacement " + $F{emplacementgeneral_codeSecteur} + " " + $F{emplacementgeneral_numeroEmplacementPersonalise} + "\n"
++ "Activité: " + $F{emplacementgeneral_raisonSocial} + "\n"
++ ($F{emplacementgeneral_numRue}.equals("0")?"":$F{emplacementgeneral_numRue} + " ")
++ ($F{emplacementgeneral_complementNumeroRueEmpl}.equals("")?"":$F{emplacementgeneral_complementNumeroRueEmpl} + " ")
++ ($F{emplacementgeneral_adresse1}.equals("")?"":$F{emplacementgeneral_adresse1} + " ")
++ ($F{emplacementgeneral_adresse2}.equals("")?"":$F{emplacementgeneral_adresse2} + " ")
++ ($F{emplacementgeneral_adresse3}.equals("")?"":$F{emplacementgeneral_adresse3} + " ")
++ ($F{emplacementgeneral_codePostal}.equals("")?"":$F{emplacementgeneral_codePostal} + " ")
++ ($F{emplacementgeneral_ville}.equals("")?"":$F{emplacementgeneral_ville})
++ ($F{emplacementgeneral_cedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="400" y="1" width="400" height="34"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Redevable " + $F{redevable_numRedevable} + "\n"
++ ($F{redevable_civilite}.equals("")?"":$F{redevable_civilite} + " ")
++ $F{redevable_nomRedevable} + " " + $F{redevable_prenom} + "\n"
++ ($F{redevable_numRue}.equals("0")?"":$F{redevable_numRue} + " ")
++ ($F{redevable_complementNumeroRueRedevable}.equals("")?"":$F{redevable_complementNumeroRueRedevable} + " ")
++ ($F{redevable_adresse1}.equals("")?"":$F{redevable_adresse1} + " ")
++ ($F{redevable_adresse2}.equals("")?"":$F{redevable_adresse2} + " ")
++ ($F{redevable_adresse3}.equals("")?"":$F{redevable_adresse3} + " ")
++ ($F{redevable_codePostal}.equals("")?"":$F{redevable_codePostal} + " ")
++ ($F{redevable_ville}.equals("")?"":$F{redevable_ville})
++ ($F{redevable_rdCedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="284" y="1" width="116" height="17">
+						<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<text><![CDATA[Version 12/07/2010]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Prevent">
+			<subreport>
+				<reportElement x="0" y="1" width="800" height="15"/>
+				<subreportParameter name="numeroFacture">
+					<subreportParameterExpression><![CDATA[$P{numeroFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "ListeDesAcomptesTrimestrielToulon_SR_details_facture.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
