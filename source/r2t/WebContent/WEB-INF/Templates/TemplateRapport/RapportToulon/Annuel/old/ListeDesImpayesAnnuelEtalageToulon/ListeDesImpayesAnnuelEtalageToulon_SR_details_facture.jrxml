@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesImpayesAnnuelEtalageToulonn_SR_details_facture" pageWidth="800" pageHeight="802" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numeroFacture" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2010007408)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+f.`montantTotal` AS facture_montantTotal,
+f.`solde` AS facture_solde,
+
+lf.`montantLigne` AS lignefacture_montantLigne,
+lf.`imputationBareme` AS lignefacture_imputationBareme,
+lf.`sectionBareme` AS lignefacture_sectionBareme,
+lf.`codeBareme` AS lignefacture_codeBareme,
+lf.`libelleBareme` AS lignefacture_libelleBareme,
+lf.`debutPeriode` AS lignefacture_debutPeriode,
+lf.`finPeriode` AS lignefacture_finPeriode,
+lf.`prixUnitaire` AS lignefacture_prixUnitaire,
+lf.`quantite` AS lignefacture_quantite,
+
+CONCAT(lf.`codeBareme`, lf.`prixUnitaire`, lf.`idFacture`, lf.`debutPeriode`, lf.`finPeriode`)  AS baremePrixUnitFactureDate,
+
+CAST(lf.`imputationBareme` AS SIGNED INTEGER) AS lignefacture_imputationBaremeInt,
+CAST(lf.`sectionBareme` AS SIGNED INTEGER) AS lignefacture_sectionBaremeInt,
+CAST(lf.`codeBareme` AS SIGNED INTEGER) AS lignefacture_codeBaremeInt
+
+FROM facture f, lignefacture lf
+
+WHERE f.`numeroFacture` = $P{numeroFacture}
+AND lf.`idFacture` = f.`numeroFacture`
+
+GROUP BY baremePrixUnitFactureDate
+
+ORDER BY
+lignefacture_imputationBaremeInt ASC,
+lignefacture_sectionBaremeInt ASC,
+lignefacture_codeBaremeInt ASC,
+lignefacture_debutPeriode ASC,
+lignefacture_finPeriode ASC]]>
+	</queryString>
+	<field name="facture_montantTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_solde" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_montantLigne" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_imputationBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_sectionBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_codeBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_libelleBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_debutPeriode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_finPeriode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_prixUnitaire" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_quantite" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="baremePrixUnitFactureDate" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_imputationBaremeInt" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_sectionBaremeInt" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_codeBaremeInt" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="800" height="15"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="2" y="2" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Imputation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="55" y="2" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="108" y="2" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Barème]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="172" y="2" width="260" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Libellé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="2" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Début]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="2" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Fin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="562" y="2" width="90" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Prix Unitaire]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="655" y="2" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Quantité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="718" y="2" width="80" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Montant]]></text>
+			</staticText>
+			<line>
+				<reportElement x="53" y="1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="106" y="1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="169" y="1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="434" y="1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="497" y="1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="560" y="1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="653" y="1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="716" y="1" width="1" height="15"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Prevent">
+			<rectangle>
+				<reportElement x="0" y="-1" width="800" height="15"/>
+			</rectangle>
+			<line>
+				<reportElement x="53" y="-1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="106" y="-1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="169" y="-1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="434" y="-1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="497" y="-1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="653" y="-1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="560" y="-1" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="716" y="-1" width="1" height="15"/>
+			</line>
+			<textField>
+				<reportElement x="2" y="0" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lignefacture_imputationBareme}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="0" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lignefacture_sectionBareme}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lignefacture_codeBareme}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="0" width="260" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lignefacture_libelleBareme}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="0" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lignefacture_debutPeriode}.equals("0")?"":$F{lignefacture_debutPeriode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="499" y="0" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lignefacture_finPeriode}.equals("0")?"":$F{lignefacture_finPeriode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="562" y="0" width="90" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lignefacture_prixUnitaire}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="655" y="0" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{lignefacture_quantite}==null?new Double(0.00):$F{lignefacture_quantite}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,## €0.00">
+				<reportElement x="718" y="0" width="80" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($F{lignefacture_montantLigne})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="31" width="116" height="15">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 08/04/2010]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="534" y="16" width="150" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Total perçu : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="534" y="31" width="150" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Reste à payer : ]]></text>
+			</staticText>
+			<textField pattern="#,## €0.00">
+				<reportElement x="698" y="31" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($F{facture_solde})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,## €0.00">
+				<reportElement x="698" y="16" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double(new Double($F{facture_montantTotal}).doubleValue() - new Double($F{facture_solde}).doubleValue())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="534" y="1" width="150" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Total pour cet emplacement : ]]></text>
+			</staticText>
+			<textField pattern="#,## €0.00">
+				<reportElement x="698" y="1" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($F{facture_montantTotal})]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

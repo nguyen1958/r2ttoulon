@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesImpayesAnnuelEtalageToulon_SR_details_RecapMontantDesignation" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d4ace06d-2825-406a-a83c-b112f787902b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="numeroFacture" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2010007408)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anneeExercice" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2012"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+f.`solde` AS facture_solde,
+f.`numeroFacture` AS facture_numeroFacture,
+eg.`codeSecteur` AS emplacementgeneral_codeSecteur,
+f.`typeTaxe` AS facture_typeTaxe,
+i.`designation` AS imputation_designation
+
+
+FROM facture f, article a, lignefacture lf, elementfacturation ef, emplacementgeneral eg, imputation i
+, redevable r
+WHERE f.`solde` > 0
+AND f.`anneeEx` = $P{anneeExercice}
+AND f.`envoyerALaTresorie` = "false"
+AND f.`etat` = "Valide"
+AND f.`typeTaxe`  LIKE "ETALAGE"
+AND lf.`idFacture` = f.`numeroFacture`
+AND a.`id_article` = lf.`idArticle`
+AND ef.`numero` = a.`id_elementfacturation`
+AND eg.`numero` = ef.`numeroEmplacement`
+AND i.`libelle` = f.`typeTaxe`
+AND r.numRedevable=f.idClient
+
+ORDER BY imputation_designation ASC,
+emplacementgeneral_codeSecteur ASC]]>
+	</queryString>
+	<field name="facture_solde" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_numeroFacture" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codeSecteur" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_typeTaxe" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="MontantDesignation" class="java.lang.Double" resetType="Group" resetGroup="GrandeTaxe" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_solde})]]></variableExpression>
+	</variable>
+	<group name="GrandeTaxe">
+		<groupExpression><![CDATA[$F{facture_typeTaxe}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="18" splitType="Prevent">
+				<textField pattern="#,## €0.00">
+					<reportElement uuid="ff38605a-39db-460b-b97d-9183d87608f1" x="255" y="2" width="120" height="15"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{MontantDesignation}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="a0d7408f-a095-4fc9-b2af-3fa1e19627d6" x="1" y="2" width="250" height="15"/>
+					<textElement markup="none">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total - " + $F{imputation_designation} + " :"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="64f03ab6-a587-4bc2-9638-71d5a6bd075d" x="401" y="1" width="150" height="17">
+						<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<text><![CDATA[Version 21/12/2012 IR 3.5.2]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

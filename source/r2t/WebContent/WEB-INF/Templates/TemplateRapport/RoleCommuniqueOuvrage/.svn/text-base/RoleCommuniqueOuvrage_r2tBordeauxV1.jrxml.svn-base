@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoleCommuniqueOuvrage_r2tBordeauxV1" pageWidth="842" pageHeight="595" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="NumeroBatch" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1437)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateLimite" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["14/09/2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nomQuartier" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["%michel%"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     CONCAT('C')as type,
+     rue.`nomrue` AS rue_nomrue,
+     rue.`nomQuartier` AS rue_nomQuartier,
+     article.`id_article` AS id_article,
+     article.`etat` AS etat,
+     article.`nom` AS nomArticle,
+     article.`dateDernierControl` AS article_dateDernierControl,
+     article.`dateProchainControl` AS article_dateProchainControl,
+     bareme.`libelle` AS bareme_libelle,
+     emplacementgeneral.`numRue` AS emplacementgeneral_numRue,
+     emplacementgeneral.`adresse1` AS emplacementgeneral_adresse1,
+     emplacementgeneral.`adresse2` AS emplacementgeneral_adresse2,
+     emplacementgeneral.`adresse3` AS emplacementgeneral_adresse3,
+     emplacementgeneral.`codePostal` AS emplacementgeneral_codePostal,
+     emplacementgeneral.`ville` AS emplacementgeneral_ville,
+     emplacementgeneral.`cedex` AS emplacementgeneral_cedex,
+     redevable.`nomRedevable` AS redevable_nomRedevable,
+     redevable.`prenom` AS redevable_prenom,
+     redevable.`numRue` AS redevable_numRue,
+     redevable.`adresse1` AS redevable_adresse1,
+     redevable.`adresse2` AS redevable_adresse2,
+     redevable.`adresse3` AS redevable_adresse3,
+     redevable.`ville` AS redevable_ville,
+     redevable.`rdCedex` AS redevable_rdCedex,
+     redevable.`codePostal` AS redevable_codePostal,
+     redevable.`civilite` AS redevable_civilite,
+     emplacementgeneral.`complementNumeroRueEmpl` AS emplacementgeneral_complementNumeroRueEmpl,
+     redevable.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable,
+     article.`quantite_article` AS article_quantite_article,
+     article.`longueur` AS article_longueur,
+     article.`largeur` AS article_largeur,
+     article.`surface` AS article_surface,
+     rue.`codeRivolie` AS rue_codeRivolie,
+     bareme.`uniteDeTravail` AS bareme_uniteDeTravail
+FROM
+     `article` article,
+     `bareme` bareme,
+     `emplacementgeneral` emplacementgeneral,
+     `elementfacturation` elementfacturation,
+     `rue` rue,
+     `redevable` redevable
+WHERE
+     article.etat = 'FacturerAControler'
+ AND article.codebareme = bareme.code
+ AND redevable.numRedevable = emplacementgeneral.numRedevable
+ AND emplacementgeneral.codeVoie = rue.codeVoie
+ AND article.id_elementfacturation = elementfacturation.numero
+ AND elementfacturation.numeroEmplacement = emplacementgeneral.numero
+ AND rue.nomQuartier LIKE $P{nomQuartier}
+ AND STR_TO_DATE(article.dateProchainControl,'%d/%m/%Y') <= STR_TO_DATE($P{dateLimite},'%d/%m/%Y')
+UNION
+SELECT DISTINCT
+     CONCAT('R')as type,
+     rue.`nomrue` AS rue_nomrue,
+     rue.`nomQuartier` AS rue_nomQuartier,
+     article.`id_article` AS id_article,
+     article.`etat` AS etat,
+     article.`nom` AS nomArticle,
+     article.`dateDernierControl` AS article_dateDernierControl,
+     article.`dateProchainControl` AS article_dateProchainControl,
+     bareme.`libelle` AS bareme_libelle,
+     emplacementgeneral.`numRue` AS emplacementgeneral_numRue,
+     emplacementgeneral.`adresse1` AS emplacementgeneral_adresse1,
+     emplacementgeneral.`adresse2` AS emplacementgeneral_adresse2,
+     emplacementgeneral.`adresse3` AS emplacementgeneral_adresse3,
+     emplacementgeneral.`codePostal` AS emplacementgeneral_codePostal,
+     emplacementgeneral.`ville` AS emplacementgeneral_ville,
+     emplacementgeneral.`cedex` AS emplacementgeneral_cedex,
+     redevable.`nomRedevable` AS redevable_nomRedevable,
+     redevable.`prenom` AS redevable_prenom,
+     redevable.`numRue` AS redevable_numRue,
+     redevable.`adresse1` AS redevable_adresse1,
+     redevable.`adresse2` AS redevable_adresse2,
+     redevable.`adresse3` AS redevable_adresse3,
+     redevable.`ville` AS redevable_ville,
+     redevable.`rdCedex` AS redevable_rdCedex,
+     redevable.`codePostal` AS redevable_codePostal,
+     redevable.`civilite` AS redevable_civilite,
+     emplacementgeneral.`complementNumeroRueEmpl` AS emplacementgeneral_complementNumeroRueEmpl,
+     redevable.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable,
+     article.`quantite_article` AS article_quantite_article,
+     article.`longueur` AS article_longueur,
+     article.`largeur` AS article_largeur,
+     article.`surface` AS article_surface,
+     rue.`codeRivolie` AS rue_codeRivolie,
+     bareme.`uniteDeTravail` AS bareme_uniteDeTravail
+FROM
+     `article` article,
+     `bareme` bareme,
+     `emplacementgeneral` emplacementgeneral,
+     `elementfacturation` elementfacturation,
+     `rue` rue,
+     `reclamation` reclamation,
+     `reclamation_article` reclamation_article,
+     `redevable` redevable
+WHERE
+     article.id_elementfacturation = elementfacturation.numero
+ AND redevable.numRedevable = emplacementgeneral.numRedevable
+ AND article.codebareme = bareme.code
+ AND elementfacturation.numeroEmplacement = emplacementgeneral.numero
+ AND emplacementgeneral.codeVoie = rue.codeVoie
+ AND article.id_article = reclamation_article.idArticle
+ AND rue.nomQuartier LIKE $P{nomQuartier}
+ AND reclamation.idReclamation = reclamation_article.idReclamation
+ AND reclamation.etat = 'ENCOURS'
+ORDER BY
+     rue_codeRivolie ASC,
+     emplacementgeneral_numrue ASC]]>
+	</queryString>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rue_nomrue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rue_nomQuartier" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_article" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomArticle" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="article_dateDernierControl" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="article_dateProchainControl" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bareme_libelle" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_cedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_rdCedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_civilite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_complementNumeroRueEmpl" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="article_quantite_article" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="article_longueur" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="article_largeur" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="article_surface" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rue_codeRivolie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bareme_uniteDeTravail" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DateDuJour" class="java.util.Date">
+		<variableExpression><![CDATA[new Date()]]></variableExpression>
+		<initialValueExpression><![CDATA[new Date()]]></initialValueExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="50">
+			<staticText>
+				<reportElement key="staticText-1" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="256" height="28"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Mairie de Bordeaux
+Direction de la vie locale]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="665" y="3" width="109" height="17"/>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$V{DateDuJour}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" positionType="Float" x="602" y="3" width="68" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Bordeaux, le]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="342" y="3" width="148" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rue_nomQuartier}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="29">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="2" y="-17" width="777" height="18"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Rôle communiqué de suivi des ouvrages N° RF_" + $P{NumeroBatch} + " avec la date du prochain contrôle avant le " + $P{dateLimite}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement key="rectangle-1" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="782" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-3" x="322" y="2" width="71" height="26"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[date prochain contrôle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="253" y="2" width="63" height="26"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[date dernier contrôle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="220" y="2" width="27" height="17"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Etat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="593" y="2" width="132" height="17"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Nom du redevable]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" stretchType="RelativeToBandHeight" x="47" y="0" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement key="line-2" stretchType="RelativeToBandHeight" x="217" y="0" width="1" height="29"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-7" x="50" y="2" width="132" height="17"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Nom ouvrage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="2" y="2" width="45" height="27"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Numero ouvrage]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" stretchType="RelativeToBandHeight" x="589" y="0" width="1" height="29"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-9" x="397" y="2" width="142" height="16"/>
+				<textElement textAlignment="Left">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Adresse emplacement]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-4" stretchType="RelativeToBandHeight" x="249" y="0" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement key="line-5" stretchType="RelativeToBandHeight" x="318" y="0" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement key="line-6" stretchType="RelativeToBandHeight" x="394" y="0" width="1" height="29"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="53" isSplitAllowed="false">
+			<rectangle>
+				<reportElement key="rectangle-2" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="782" height="50" backcolor="#FFFFFF"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" x="2" y="0" width="45" height="43"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{id_article}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-7" stretchType="RelativeToTallestObject" x="47" y="0" width="1" height="49"/>
+			</line>
+			<line>
+				<reportElement key="line-8" stretchType="RelativeToTallestObject" x="217" y="0" width="1" height="49"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-7" stretchType="RelativeToTallestObject" x="593" y="0" width="189" height="43"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{redevable_civilite}.equals("")?"":$F{redevable_civilite} + " ")+
+$F{redevable_nomRedevable}+ " " + $F{redevable_prenom} + "\n" +
+($F{redevable_numRue}.equals("")?"":$F{redevable_numRue} + " ") + 
+($F{redevable_complementNumeroRueRedevable}.equals("")?"":$F{redevable_complementNumeroRueRedevable}+" ") +
+$F{redevable_adresse1} + "\n" +
+($F{redevable_adresse2}.equals("")?"":$F{redevable_adresse2}+"\n")+
+($F{redevable_adresse3}.equals("")?"":$F{redevable_adresse3}+"\n")+
+($F{redevable_codePostal}.equals("")?"":$F{redevable_codePostal}+ " ") +
+($F{redevable_ville}.equals("")?"":$F{redevable_ville} +" ")+
+($F{redevable_rdCedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-9" stretchType="RelativeToTallestObject" mode="Transparent" x="589" y="0" width="1" height="49"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-8" x="220" y="0" width="27" height="43"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{type}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-10" stretchType="RelativeToTallestObject" x="249" y="0" width="1" height="49"/>
+			</line>
+			<line>
+				<reportElement key="line-11" stretchType="RelativeToTallestObject" x="318" y="0" width="1" height="49"/>
+			</line>
+			<line>
+				<reportElement key="line-12" stretchType="RelativeToTallestObject" x="394" y="0" width="1" height="49"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-9" x="322" y="0" width="71" height="43"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{article_dateProchainControl}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-10" x="253" y="0" width="63" height="43"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{article_dateDernierControl}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-11" stretchType="RelativeToTallestObject" x="397" y="0" width="192" height="43"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{emplacementgeneral_numRue}.equals("")?"":$F{emplacementgeneral_numRue}+" ") + 
+($F{emplacementgeneral_complementNumeroRueEmpl}.equals("")?"":$F{emplacementgeneral_complementNumeroRueEmpl} +" ")+
+($F{emplacementgeneral_adresse1}.equals("")?"":$F{emplacementgeneral_adresse1}) +
+($F{emplacementgeneral_adresse2}.equals("")?"":"\n"+$F{emplacementgeneral_adresse2})+
+($F{emplacementgeneral_adresse3}.equals("")?"":"\n"+$F{emplacementgeneral_adresse3})+
+($F{emplacementgeneral_codePostal}.equals("")?"":"\n"+$F{emplacementgeneral_codePostal}+ " ")+ 
+($F{emplacementgeneral_ville}.equals("")?"":$F{emplacementgeneral_ville})+
+($F{emplacementgeneral_cedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="48" y="0" width="167" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{article_quantite_article} + " x " + $F{bareme_libelle} +" " + ($F{nomArticle}.equals( "#vide#" )?"":"("+$F{nomArticle}+")")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="50" y="20" width="49" height="14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Longueur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="105" y="20" width="49" height="14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Largeur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="160" y="20" width="49" height="14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Surface]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="50" y="35" width="49" height="14">
+					<printWhenExpression><![CDATA[new Boolean ($F{bareme_uniteDeTravail}.equals( "ML" ) || ($F{bareme_uniteDeTravail}.equals( "M2" )&& $F{article_surface}.equals( Double.valueOf(0) )))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{article_longueur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="105" y="35" width="49" height="14">
+					<printWhenExpression><![CDATA[new Boolean ($F{bareme_uniteDeTravail}.equals( "M2" ) && $F{article_surface}.equals( Double.valueOf(0) ))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{article_largeur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="160" y="35" width="49" height="14">
+					<printWhenExpression><![CDATA[new Boolean ($F{bareme_uniteDeTravail}.equals( "M2" ) && ! $F{article_surface}.equals( Double.valueOf(0) ))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{article_surface}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" positionType="Float" x="302" y="3" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-4" positionType="Float" x="376" y="3" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-10" x="47" y="3" width="155" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 10-09-2009 v3.50]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

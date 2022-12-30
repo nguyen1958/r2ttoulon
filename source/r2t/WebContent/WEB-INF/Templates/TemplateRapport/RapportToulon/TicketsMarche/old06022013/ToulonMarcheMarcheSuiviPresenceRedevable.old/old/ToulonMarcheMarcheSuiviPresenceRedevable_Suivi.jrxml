@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ToulonMarcheMarcheSuiviPresenceRedevable_Facture" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="numRedevable" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2697)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebutMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/06/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFinMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["30/06/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codesecteur" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(85)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT   DISTINCT   	
+	msr.`numRedevable`,
+    	msr.`dateControle`,
+    	msr.`etat`,
+    	msr.`idmarche`,
+	msr.numemplacement,
+	(SELECT COUNT(*) FROM marchesuiviredevable  
+		WHERE numRedevable = $P{numRedevable}
+		AND etat = 'absent'
+		AND `dateControle` >= STR_TO_DATE($P{dateDebutMois},'%d/%m/%Y')
+    		AND `dateControle` <= STR_TO_DATE($P{dateFinMois},'%d/%m/%Y')
+		AND codesecteur = $P{codesecteur}
+	) as nbAbsent,
+	(SELECT COUNT(*) FROM marchesuiviredevable  
+		WHERE numRedevable = $P{numRedevable}
+		AND etat = 'present'
+		AND `dateControle` >= STR_TO_DATE($P{dateDebutMois},'%d/%m/%Y')
+    		AND `dateControle` <= STR_TO_DATE($P{dateFinMois},'%d/%m/%Y')
+		AND codesecteur = $P{codesecteur}
+	) as nbPresent
+FROM 	
+   	marchesuiviredevable msr   
+    
+WHERE 
+	msr.numRedevable = $P{numRedevable} 
+	AND msr.`dateControle` >= STR_TO_DATE($P{dateDebutMois},'%d/%m/%Y')
+    	AND msr.`dateControle` <= STR_TO_DATE($P{dateFinMois},'%d/%m/%Y')
+	AND codesecteur = $P{codesecteur}]]>
+	</queryString>
+	<field name="numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dateControle" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idmarche" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numemplacement" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nbAbsent" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nbPresent" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DateDuJour" class="java.util.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="6" y="0" width="93" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date du contrôle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="0" width="66" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Etat]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="398" height="2"/>
+			</line>
+			<staticText>
+				<reportElement x="398" y="4" width="138" height="17">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[version 01/06/2012 IR 3.5.2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="0" width="106" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Numéro emplacement]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="1" width="177" height="20">
+					<printWhenExpression><![CDATA[new Boolean($F{etat}.equals("absent"))]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateControle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="1" width="66" height="20">
+					<printWhenExpression><![CDATA[new Boolean($F{etat}.equals("absent"))]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{etat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="181" y="1" width="66" height="20">
+					<printWhenExpression><![CDATA[new Boolean($F{etat}.equals("absent"))]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numemplacement}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="106" splitType="Stretch">
+			<textField>
+				<reportElement x="6" y="75" width="194" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre d'absences : " + $F{nbAbsent}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="55" width="353" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre de présences : " + $F{nbPresent}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="15" width="530" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre de jour depuis le début du mois : " + Integer.parseInt(DateFormat.getDateInstance(DateFormat.SHORT).format(new Date()).substring(0,2))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="35" width="530" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre de jours non contrôlés : " + (Integer.parseInt(DateFormat.getDateInstance(DateFormat.SHORT).format(new Date()).substring(0,2))- $F{nbPresent}.intValue() -  $F{nbAbsent}.intValue())]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<subDataset name="dataset1"/>
+	<parameter name="NumeroBatch" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1769)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+	SUBSTR( br.periode,4,2) as mois,
+	br.annee,
+	br.periode,
+    (SELECT parametresmairie.`ville` FROM `parametresmairie`) AS villemairie,
+    mt.`imputation` AS libelleImputation,
+    mt.`dateEncaissement` AS ticket_dateEncaissement,
+    mt.`idMarche`,
+    SUM(mt.`montant` ) AS ticket_montantMarche
+FROM
+     	batchrapportcomptable br,
+     	`marcheticket` mt
+WHERE 
+	br.idBatchRapportComptable = $P{NumeroBatch} 
+ 	AND SUBSTR(mt.`dateEncaissement`,6,2) LIKE  SUBSTR(br.periode,4,2)
+	AND SUBSTR(mt.`dateEncaissement`,1,4) LIKE br.annee
+ 	AND (mt.`etat` LIKE '%valide%'
+	OR mt.`etat` LIKE '%reedite%')
+GROUP BY mt.`imputation`
+ORDER BY mt.`imputation`]]>
+	</queryString>
+	<field name="mois" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="annee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="periode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="villemairie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="libelleImputation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ticket_dateEncaissement" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idMarche" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ticket_montantMarche" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="MoisLettre" class="java.lang.String">
+		<variableExpression><![CDATA[($F{mois}.equals("01"))?new String("janvier"):
+($F{mois}.equals("02"))?new String("février"):
+($F{mois}.equals("03"))?new String("mars"):
+($F{mois}.equals("04"))?new String("avril"):
+($F{mois}.equals("05"))?new String("mai"):
+($F{mois}.equals("06"))?new String("juin"):
+($F{mois}.equals("07"))?new String("juillet"):
+($F{mois}.equals("08"))?new String("aout"):
+($F{mois}.equals("09"))?new String("septembre"):
+($F{mois}.equals("10"))?new String("octobre"):
+($F{mois}.equals("11"))?new String("novembre"):
+new String("décembre")]]></variableExpression>
+	</variable>
+	<variable name="MontantFamille" class="java.lang.Double" resetType="Group" resetGroup="famille">
+		<variableExpression><![CDATA[$F{ticket_montantMarche}]]></variableExpression>
+	</variable>
+	<variable name="MontantMarcheTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{MontantFamille}]]></variableExpression>
+	</variable>
+	<variable name="vMoisNombre" class="java.lang.String">
+		<variableExpression><![CDATA[($F{mois}.equals("01"))?new String("1"):
+($F{mois}.equals("02"))?new String("2"):
+($F{mois}.equals("03"))?new String("3"):
+($F{mois}.equals("04"))?new String("4"):
+($F{mois}.equals("05"))?new String("5"):
+($F{mois}.equals("06"))?new String("6"):
+($F{mois}.equals("07"))?new String("7"):
+($F{mois}.equals("08"))?new String("8"):
+($F{mois}.equals("09"))?new String("9"):
+($F{mois}.equals("10"))?new String("10"):
+($F{mois}.equals("11"))?new String("11"):
+($F{mois}.equals("1"))?new String("12"):
+new String("décembre")]]></variableExpression>
+	</variable>
+	<group name="famille">
+		<groupExpression><![CDATA[$F{libelleImputation}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField>
+					<reportElement x="0" y="0" width="200" height="20" printWhenGroupChanges="famille"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{libelleImputation}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="28"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-14" x="0" y="0" width="555" height="48"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Ville de " + $F{villemairie} + ", Régie des emplacements"+"\nVentilation des versements par marché\n"
++ "du mois de "+ $V{MoisLettre} + " " + $F{annee}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="-17" width="137" height="17">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Version 20/06/2012 IR3.5.2]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="#,## €0.00">
+				<reportElement x="329" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{ticket_montantMarche}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="0" width="287" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Sous total " + $F{libelleImputation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" x="395" y="3" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-13" x="469" y="3" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="68">
+			<textField evaluationTime="Report" pattern="#,## €0.00">
+				<reportElement x="329" y="11" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantMarcheTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="114" y="11" width="205" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Total versement du mois de " + $V{MoisLettre}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="43" width="200" height="25"/>
+				<subreportParameter name="NumeroBatch">
+					<subreportParameterExpression><![CDATA[$P{NumeroBatch}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Mois">
+					<subreportParameterExpression><![CDATA[$F{mois}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele}+ "ToulonMarcheRecapMensuelParMarche_sr1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

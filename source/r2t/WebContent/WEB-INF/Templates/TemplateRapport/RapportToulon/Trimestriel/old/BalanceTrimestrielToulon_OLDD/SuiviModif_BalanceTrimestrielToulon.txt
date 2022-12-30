@@ -1,0 +1,9 @@
+BalanceTrimestrielToulon
+---------------------
+f.`typeTaxe` NOT IN ('TLPE','ETALAGE','pub','TICKET_MARCHE')
+
+
+
+Version du 03/08/2012
+Ajout du rejet des taxes non pris en compte dans le sous rapport : BalanceToulon_SR_Totaux
+Rejet des taxes : 'TLPE','ETALAGE'

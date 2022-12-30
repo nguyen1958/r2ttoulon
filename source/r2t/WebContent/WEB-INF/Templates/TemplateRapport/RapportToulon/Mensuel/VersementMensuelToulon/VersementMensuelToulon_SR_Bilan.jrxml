@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VersementJournalierToulon_SR_Page2" pageWidth="442" pageHeight="802" columnWidth="442" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="dateDebutMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["07"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFinMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2009"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT t.`typepayement` AS libelleType,
+	(	SELECT SUM( l.`montantPayement`)
+		FROM
+			`payement` p,
+			`lignepayement` l,
+			`facture` f
+		WHERE
+			f.`idFacture` = l.`idFacture`
+			AND l.idPayement = p.idPayement
+			AND p.etat LIKE "valide"
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y') 
+				>=
+				STR_TO_DATE($P{dateDebutMois},'%d/%m/%Y')
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y') 
+				<=
+				STR_TO_DATE($P{dateFinMois},'%d/%m/%Y')
+            AND p.idTypePayement = t.idTypePayement
+) AS TotalversementPeriode,
+    (	SELECT COUNT( l.`montantPayement`)
+		FROM
+			`payement` p,
+			`lignepayement` l,
+			`facture` f
+		WHERE
+			f.`idFacture` = l.`idFacture`
+			AND l.idPayement = p.idPayement
+			AND p.etat LIKE "valide"
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y') 
+				>=
+				STR_TO_DATE($P{dateDebutMois},'%d/%m/%Y')
+			AND STR_TO_DATE(p.datePayement,'%d/%m/%Y') 
+				<=
+				STR_TO_DATE($P{dateFinMois},'%d/%m/%Y')
+			AND p.idTypePayement = t.idTypePayement
+) AS NombrePayement
+FROM
+     typepayement t]]>
+	</queryString>
+	<field name="libelleType" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TotalversementPeriode" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NombrePayement" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="442" height="15"/>
+			</rectangle>
+			<line>
+				<reportElement x="277" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="346" y="0" width="1" height="15"/>
+			</line>
+			<staticText>
+				<reportElement x="274" y="0" width="68" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="0" width="91" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Valeur]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="192" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Total "+$F{libelleType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="64" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{NombrePayement}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="363" y="0" width="75" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{TotalversementPeriode}==null?new Double(0.00):$F{TotalversementPeriode}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="442" height="20"/>
+			</rectangle>
+			<line>
+				<reportElement x="277" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="346" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="100" y="16" width="116" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 06/10/2009]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

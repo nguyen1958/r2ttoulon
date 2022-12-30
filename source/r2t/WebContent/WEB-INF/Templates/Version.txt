@@ -1,0 +1,83 @@
+Version 3.2		20 janvier 2009
+	Modification du rôle état justificatif de la recette 
+	et du rôle CertificatAnnulation recette
+		Affichage Elu et gestionnaire amélioré pour le type de taxe et l'année d'exercice
+
+Version 3.3		21 janvier 2009
+	Modification du rôle état justificatif de la recette 
+	et du rôle CertificatAnnulation recette
+		Amélioration
+		Changement des chemins
+
+version 3.7		06 février 2009
+	Role facturation : Modification de requête pour les adresses taxée.
+	On avait toutes les adresses du client au lieu uniquement de celles facturées
+
+version 3.8
+	Etat justificatif de la recette : Agrandissement de la zone d'adresse du redevable pour affichage des champs manquants
+
+version 3.81
+	Certificat d'annulation de recette : modification des adresses taxées
+	Rapport communiqué : Ajout des adresses redevables
+
+version 3.87
+	Modif requête role communique
+	Modif requête role suivi de facturation
+
+
+version 3.88
+	Modif requête role communique
+
+Version 3.0.89
+	Modif de Role certificat d'annulation de recette ajout du test annulation édité
+
+version 3.0.90
+	Modif de etat justificatif de recette ajout de l'année au type de taxe dans la requête
+	modif de changement d'adresse numéro de titre par facture
+	
+version 3.0.91
+	Changement des adresses avec ajout du complément numero rue
+	Changement dans rôle changement d'adresse cast du montant en decimal
+
+version 3.0.92
+	Changement dans rôle changement d'adresse de la requête pour l'adresse historique correspondant au redeavable
+version 3.0.93
+	Changement dans rôle changement d'adresse ajout du rapport ancienne adresse
+	pour avoir la dernière adresse du redevable
+version 3.0.94
+	Changement dans rôle changement d'adresse avec ajout du complément numero rue
+version 3.0.95
+	Changement dans rôle changement d'adresse ajout du rapport ancienne adresse
+	pour avoir la dernière adresse du redevable, j'ai remis limit 1 qui est mal supporté par ireport
+version 3.0.96
+	Modif format date dans certificat annulation recette	
+version 3.0.97
+	modif rapport changement d'adresse pour affichage sur plus d'un feuille d'un redevable
+	modif de la structure du rapport, avec doublement des rectangle et des lignes pour double affichage
+version 3.0.98
+	Modif largeur champ facture et REJR
+version 3.0.99
+	Proto facture TLPE
+version 3.4
+	Certificat d'annulation de recette : montant total en string le double avec le format n'est pas affiché
+	Le nom de la direction a encore changé : il s’agit de la Direction de la Vie Locale. 
+	Role facturation détail : changement de la somme intermédiaire remplacement du champ $V{MontantReportIncPage} 
+	par la variable $V{MontantTotalTypeFactureParPage} avec évaluation maintenant. résultat ok
+	Role état justificatif de recette modif du calcul des montants: changement de la somme intermédiaire remplacement du champ $V{MontantReportIncPage} 
+	par la variable $V{MontantTotalTypeFactureParPage} avec évaluation maintenant. résultat ok
+version 3.41
+	Role facturation détail : pour afficher le rectangle d'encadrement et les lignes verticales lorsque 
+	le sous rapport adresses taxées dépasse d'une page, il faut cocherles propriété des
+	objet Imprimer si trop de détails et Imprimer dans la première bande complète  
+	Pour montrer qu'il s'agit d'un repport, je n'affiche pas le ligne verticale autres que celle de l'adresse taxée
+	Idem pour changement d'adresse et suivi de facturation
+version 3.42
+	Etat justificatif de recette : Affichage de la date avec une autre méthode en passant par des string. l'ancienne méthode est conservée le controle texte n'est pas affiché
+	
+version 3.43
+	Passage à ireport 3.5.1	
+version 3.44
+	Facture TLPE
+version 3.45
+	modif des dates avec formatage dans Etat justificatif de recette, rôle d'annulation et RoleCertificatAnnulationRecette etc.
+	Dans RoleCertificatAnnulationRecette ajout de la contrainte imputation.anneeExercice = facture.anneeEx

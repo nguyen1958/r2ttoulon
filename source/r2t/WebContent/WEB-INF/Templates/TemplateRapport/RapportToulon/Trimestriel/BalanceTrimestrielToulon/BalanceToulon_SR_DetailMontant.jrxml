@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BalanceAnnuelToulon_SR_DetailMontant" pageWidth="802" pageHeight="802" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="dateFin" class="java.lang.String">
+		<defaultValueExpression><![CDATA["31/12/2014"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebut" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/10/2014"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="typeTaxe" class="java.lang.String">
+		<defaultValueExpression><![CDATA["MARCHE_TRIMESTRIEL"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anneeExercice" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2014"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT i.`designation` AS imputation_designation,
+
+(SELECT SUM(f.montantTotal)
+from facture f 
+WHERE f.`typeTaxe` = $P{typeTaxe}
+AND (f.`etat` LIKE "Valide" OR f.`etat` LIKE "ANNULEE" OR f.`etat` LIKE "Factice")
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+) AS constatation,
+
+
+(SELECT SUM(l.`montantPayement`)
+FROM facture f,lignepayement l,typepayement t,payement p
+WHERE f.`typeTaxe` = $P{typeTaxe}
+AND l.`idFacture` = f.`idFacture`
+AND l.`idPayement` = p.`idPayement`
+AND p.`etat` LIKE "Valide"
+and p.`datePayement` != ""
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+AND p.idTypePayement =t.idTypePayement
+AND   t.`typepayement` not in ('Remise','Exoneration')
+) AS perception,
+
+(SELECT  SUM( f.`solde` )
+FROM facture f
+WHERE  f.`typeTaxe` = $P{typeTaxe}
+AND (f.`etat` LIKE "Valide" OR f.`etat` LIKE "Factice")
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+AND f.`solde` > 0
+) AS poursuite,
+
+
+(SELECT SUM(payement.montantPayement )
+FROM payement, typepayement, `lignepayement`, facture f
+WHERE payement.idTypePayement = typepayement.idTypePayement
+AND   typepayement = "remise"
+AND payement.`etat` LIKE "Valide"
+AND f.`etat` LIKE "Valide"
+AND `lignepayement`.`idPayement`= payement.`idPayement`
+AND f.`idFacture` = `lignepayement`.`idFacture`
+AND f.`typeTaxe` = $P{typeTaxe}
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+) AS remise,
+
+(SELECT SUM(payement.montantPayement )
+FROM payement, typepayement, `lignepayement`, facture f
+WHERE payement.idTypePayement = typepayement.idTypePayement
+AND   typepayement = "Exoneration"
+AND payement.`etat` LIKE "Valide"
+AND f.`etat` LIKE "Valide"
+AND `lignepayement`.`idPayement`= payement.`idPayement`
+AND f.`idFacture` = `lignepayement`.`idFacture`
+AND f.`typeTaxe` = $P{typeTaxe}
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+) AS exoneration,
+
+(SELECT SUM(f.montantTotal)
+FROM facture f
+WHERE f.`typeTaxe` = $P{typeTaxe}
+AND f.`etat` LIKE "ANNULEE"
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+) AS annulation
+
+FROM facture f, imputation i
+
+WHERE i.`libelle` = $P{typeTaxe}
+AND i.`anneeExercice` = $P{anneeExercice}
+AND (f.`etat` LIKE "Valide" OR f.`etat` LIKE "ANNULEE" OR f.`etat` LIKE "Factice")
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+
+GROUP BY i.`designation`]]>
+	</queryString>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="constatation" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="perception" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="poursuite" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remise" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="exoneration" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="annulation" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="excedent" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{perception}.doubleValue()-$F{constatation}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vannulation" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{annulation}==null?new Double(0.00):new Double($F{annulation}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vremise" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{remise}==null?new Double(0.00):new Double($F{remise}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vperception" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{perception}==null?new Double(0.00):new Double($F{perception}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vconstatation" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{constatation}==null?new Double(0.00):new Double($F{constatation}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vpoursuite" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{poursuite}==null?new Double(0.00):new Double($F{poursuite}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vexoneration" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{exoneration}==null?new Double(0.00):new Double($F{exoneration}.doubleValue())]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField pattern="#,##0.00">
+				<reportElement x="310" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{constatation}==null?new Double(0.00):$F{constatation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="390" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{perception}==null?new Double(0.00):$F{perception}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="470" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{poursuite}==null?new Double(0.00):$F{poursuite}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="550" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($V{vconstatation}.doubleValue()-$V{vperception}.doubleValue()-$V{vpoursuite}.doubleValue()-$V{vexoneration}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="710" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{excedent}==null?new Double(0.00):$V{excedent}.doubleValue()<=0.00?new Double(0.00):$V{excedent}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="0" y="0" width="229" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{imputation_designation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="134" y="0" width="136" height="15">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[version 21/12/2014 IR 3.5.2]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="630" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{exoneration}==null?new Double(0.00):$F{exoneration}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

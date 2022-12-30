@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesImpayesAnnuelEtalageToulon_SR_details" pageWidth="800" pageHeight="802" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ae8b16d5-ab4b-4dd2-bbe3-55a6467b3df3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="3">
+			<pen lineWidth="0.25"/>
+			<topPen lineWidth="0.25"/>
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select distinct eg.numero,eg.raisonSocial,eg.numrue,eg.adresse1,eg.codesecteur,i.designation,
+a.id_article,a.nom,b.libelle,a.quantite_article,a.longueur,a.largeur,a.surface,a.commentaire
+from emplacementgeneral eg,elementfacturation ef,article a,imputation i,bareme b
+where eg.numredevable=-1
+and eg.numero=ef.numeroEmplacement
+and ef.numero=a.id_elementfacturation
+and eg.codetype=i.idimputation
+and a.codebareme=b.code and b.anExercice=eg.anneeExerciceImputation
+order by i.designation,eg.codesecteur,eg.numero]]>
+	</queryString>
+	<field name="numero" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="raisonSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numrue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codesecteur" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_article" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="libelle" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="quantite_article" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="longueur" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="largeur" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="surface" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="commentaire" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="MontantTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="MontantDesignation" class="java.lang.Double" resetType="Group" resetGroup="GrandeTaxe" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="MontantSecteur" class="java.lang.Double" resetType="Group" resetGroup="secteur" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<group name="GrandeTaxe">
+		<groupExpression><![CDATA[$F{designation}]]></groupExpression>
+		<groupHeader>
+			<band height="21" splitType="Prevent">
+				<textField>
+					<reportElement uuid="bd1ace90-2269-4891-b1c5-ff425611064c" positionType="Float" x="0" y="1" width="500" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["- Taxe " + $F{designation}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<group name="secteur">
+		<groupExpression><![CDATA[$F{codesecteur}]]></groupExpression>
+		<groupHeader>
+			<band height="26" splitType="Prevent">
+				<textField>
+					<reportElement uuid="9f09d812-4f08-4584-b44d-2d599009eeab" x="0" y="5" width="500" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["   - Secteur " +$F{codesecteur}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<group name="emplacement">
+		<groupExpression><![CDATA[$F{numero}]]></groupExpression>
+		<groupHeader>
+			<band height="56">
+				<textField>
+					<reportElement uuid="7692f664-c648-4a94-a50d-e596203122d2" x="21" y="0" width="346" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA["Adresse : "+$F{numrue}+" "+$F{adresse1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="2dbd1876-a962-45d5-aac0-28f77b6229db" x="21" y="15" width="257" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA["Activité : "+$F{raisonSocial}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0db5cfdf-ab6a-4f6e-b591-e3734a5c57f1" x="536" y="1" width="150" height="14">
+						<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<text><![CDATA[Version 06/10/2017 IR 5.1.0]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="3d65fac4-74f8-4d3f-b881-956610414c68" style="style1" x="21" y="41" width="197" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<text><![CDATA[Libellé]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="4ee3370a-3343-4984-841d-b25654e35532" style="style1" x="218" y="41" width="60" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<text><![CDATA[Longueur]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="6c9bd901-1258-46d0-a9cb-b6d9455d4361" style="style1" x="278" y="41" width="60" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<text><![CDATA[Largeur]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="efec488c-fb9c-4705-bf40-dce8c1291708" style="style1" x="338" y="41" width="60" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<text><![CDATA[Surface]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="90a18a09-b855-48f7-aa0f-3d55cbbfdbd0" style="style1" x="398" y="41" width="60" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<text><![CDATA[Quantité]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="1dca6676-2e72-4f71-9f17-03e4f76b89d5" style="style1" x="458" y="41" width="228" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<text><![CDATA[Commentaire]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="33e785c5-140b-48b6-baab-3bc222915d6d" style="style1" stretchType="RelativeToTallestObject" x="21" y="0" width="197" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{libelle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="84dd5b98-5bb4-4ba2-9488-956cdb4ef4e2" style="style1" stretchType="RelativeToTallestObject" x="218" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{longueur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="53890c00-bc00-4a0c-b6f0-d8b97fef055d" style="style1" stretchType="RelativeToTallestObject" x="338" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{surface}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f76f3bc9-276a-4b20-8664-e0ef5a56641c" style="style1" stretchType="RelativeToTallestObject" x="278" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{largeur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1ca471cd-fc49-4c42-9209-d8f7e714b150" style="style1" stretchType="RelativeToTallestObject" x="398" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantite_article}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="ce2a14cb-8c9e-42f1-a774-063a710e6191" style="style1" stretchType="RelativeToTallestObject" x="458" y="0" width="228" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{commentaire}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

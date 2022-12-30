@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TicketMarcheFamilleToulon_subreport1" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="NumeroBatch" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1446)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+     	SUM(`ligneticket`.`montantpartiel`) AS ligneticket_montantType,
+     	bareme.`libelle`
+FROM
+	`batchrapportcomptable` br,
+     	`marcheticket` ticket,
+     	`marcheligneticket` ligneticket,
+     	`bareme` bareme
+WHERE 
+	br.idBatchRapportComptable = $P{NumeroBatch} AND
+ 	(ticket.`etat` LIKE '%valide%'
+	OR ticket.`etat` LIKE '%reedite%')
+ 	AND ligneticket.`idticket`= ticket.`idTicket`
+ 	AND ligneticket.`idbareme`= bareme.`code`
+ 	AND SUBSTR(ticket.`dateEncaissement`,6,2) LIKE  SUBSTR( br.periode,4,2)
+	AND SUBSTR(ticket.`dateEncaissement`,1,4) LIKE br.annee
+
+ GROUP BY bareme.`code`]]>
+	</queryString>
+	<field name="ligneticket_montantType" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="libelle" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ventilation par type]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="3" width="235" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{libelle} + " : "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,## €0.00">
+				<reportElement x="235" y="3" width="130" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{ligneticket_montantType}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="393" y="6" width="137" height="17">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Version 12/03/2012 IR3.5.2]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="10" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="2" width="555" height="1"/>
+			</line>
+		</band>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

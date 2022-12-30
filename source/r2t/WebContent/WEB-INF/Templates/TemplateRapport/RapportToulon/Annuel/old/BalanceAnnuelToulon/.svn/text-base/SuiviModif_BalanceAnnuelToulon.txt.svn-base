@@ -1,0 +1,18 @@
+Les rapports balance Annuel et trimestriel sont identiques sauf pour la période (Un an ou un trimestre)
+La période est déterminée dans dans le rapport principal.
+Les 3 autres rapports sont identiques pour les 2 types de rapport annuel et trimestriel sauf pour le type de taxe
+
+On modifie dans annuel ou trimestriel et on copie les rapports modifiés dans balance trimestriel ou annuel
+
+
+BalanceAnnuelToulon
+---------------------
+f.`typeTaxe` NOT IN ('pub','TICKET_MARCHE')
+
+
+
+Modif du 18/12/2012
+supression de la contrainte AND (f.`etat` LIKE "Valide" OR f.`etat` LIKE "Factice") dans la requête de calcul de perception
+dans les sous rapports :
+BalanceToulon_SR_DetailMontant 
+BalanceToulon_SR_Totaux

@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Facturer2tBordeauxV1" pageWidth="595" pageHeight="842" columnWidth="545" leftMargin="30" rightMargin="20" topMargin="39" bottomMargin="2" isSummaryNewPage="true">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[".\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_numeroFacture" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2010000107)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     redevable.`civilite` AS redevable_civilite,
+     redevable.`nomRedevable` AS redevable_nomRedevable,
+     redevable.`prenom` AS redevable_prenom,
+     redevable.`numRue` AS redevable_numRue,
+     redevable.`adresse1` AS redevable_adresse1,
+     redevable.`adresse2` AS redevable_adresse2,
+     redevable.`adresse3` AS redevable_adresse3,
+     redevable.`ville` AS redevable_ville,
+     redevable.`codePostal` AS redevable_codePostal,
+     redevable.`rdCedex` AS redevable_rdCedex,
+     redevable.`numRedevable` AS redevable_numRedevable,
+     facture.`numeroTitre` AS facture_numeroTitre,
+     facture.`dateCreation` AS facture_dateCreation,
+     facture.`typeTaxe` AS facture_typeTaxe,
+     facture.`idClient` AS facture_idClient,
+     facture.`anneeEx` AS facture_anneeEx,
+     facture.`montantTotal` AS facture_montantTotal,
+     facture.`idBatchTraitement` AS facture_idBatchTraitement,
+     facture.`numeroFacture` AS facture_numeroFacture,
+     imputation.`designation` AS imputation_designation,
+     facture.`utiliserMontantDeSeuil` AS facture_utiliserMontantDeSeuil,
+     imputation.`minimumPerception` AS imputation_minimumPerception,
+     imputation.`telGestionnaire` AS imputation_telGestionnaire,
+     imputation.`faxGestionnaire` AS imputation_faxGestionnaire,
+     facture.`etat` AS facture_etat,
+     redevable.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable
+FROM
+     `facture` facture,
+     `redevable` redevable,
+     `imputation` imputation
+WHERE
+     facture.numeroFacture = $P{par_numeroFacture}
+ AND redevable.numRedevable = facture.idClient
+ AND imputation.libelle = facture.typeTaxe
+ AND facture.`anneeEx` = `imputation`.`anneeExercice`]]>
+	</queryString>
+	<field name="redevable_civilite" class="java.lang.String"/>
+	<field name="redevable_nomRedevable" class="java.lang.String"/>
+	<field name="redevable_prenom" class="java.lang.String"/>
+	<field name="redevable_numRue" class="java.lang.String"/>
+	<field name="redevable_adresse1" class="java.lang.String"/>
+	<field name="redevable_adresse2" class="java.lang.String"/>
+	<field name="redevable_adresse3" class="java.lang.String"/>
+	<field name="redevable_ville" class="java.lang.String"/>
+	<field name="redevable_codePostal" class="java.lang.String"/>
+	<field name="redevable_rdCedex" class="java.lang.String"/>
+	<field name="redevable_numRedevable" class="java.lang.Integer"/>
+	<field name="facture_numeroTitre" class="java.lang.String"/>
+	<field name="facture_dateCreation" class="java.lang.String"/>
+	<field name="facture_typeTaxe" class="java.lang.String"/>
+	<field name="facture_idClient" class="java.lang.Integer"/>
+	<field name="facture_anneeEx" class="java.lang.String"/>
+	<field name="facture_montantTotal" class="java.lang.String"/>
+	<field name="facture_idBatchTraitement" class="java.lang.Integer"/>
+	<field name="facture_numeroFacture" class="java.lang.Integer"/>
+	<field name="imputation_designation" class="java.lang.String"/>
+	<field name="facture_utiliserMontantDeSeuil" class="java.lang.String"/>
+	<field name="imputation_minimumPerception" class="java.lang.String"/>
+	<field name="imputation_telGestionnaire" class="java.lang.String"/>
+	<field name="imputation_faxGestionnaire" class="java.lang.String"/>
+	<field name="facture_etat" class="java.lang.String"/>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String"/>
+	<variable name="Var_montantTotal" class="java.lang.String">
+		<variableExpression><![CDATA[$F{facture_montantTotal}]]></variableExpression>
+	</variable>
+	<variable name="MontantTotalTypeFactureParPage" class="java.lang.Double"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="331" splitType="Prevent">
+			<staticText>
+				<reportElement key="staticText-18" x="87" y="27" width="138" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Direction de la vie locale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" mode="Opaque" x="4" y="196" width="68" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Bordeaux le ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-24" mode="Opaque" x="4" y="220" width="180" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AVIS DES SOMMES A PAYER]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-17" mode="Opaque" x="72" y="196" width="135" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_dateCreation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="TFCiviliteNomPrenom-1" stretchType="RelativeToTallestObject" mode="Transparent" x="288" y="126" width="240" height="85" isRemoveLineWhenBlank="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{redevable_civilite}.equals("")?"":$F{redevable_civilite} + " ")+
+$F{redevable_nomRedevable}+ " " + $F{redevable_prenom} + "\n" +
+($F{redevable_numRue}.equals("")?"":$F{redevable_numRue} + " ") + 
+($F{redevable_complementNumeroRueRedevable}.equals("")?"":$F{redevable_complementNumeroRueRedevable}+" ") +
+$F{redevable_adresse1} + "\n" +
+($F{redevable_adresse2}.equals("")?"":$F{redevable_adresse2}+"\n")+
+($F{redevable_adresse3}.equals("")?"":$F{redevable_adresse3}+"\n")+
+($F{redevable_codePostal}.equals("")?"":$F{redevable_codePostal}+ " ") +
+($F{redevable_ville}.equals("")?"":$F{redevable_ville} +" ")+
+($F{redevable_rdCedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-51" x="87" y="42" width="135" height="29"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Service de la Surveillance Administrative]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="504" y="211" width="27" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="531" y="186" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="504" y="68" width="27" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-4" x="531" y="68" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement key="line-5" x="225" y="68" width="27" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-6" x="225" y="68" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement key="line-7" x="225" y="186" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement key="line-8" x="225" y="211" width="27" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-54" x="258" y="78" width="270" height="42"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Exp.    RECETTE DES FINANCES
+           HOTEL DE VILLE
+           33077 BORDEAUX Cédex
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-55" mode="Transparent" x="258" y="126" width="30" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Dest. ]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-9" x="225" y="118" width="305" height="1"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-34" x="4" y="125" width="188" height="74"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Hôtel de Ville"+"\n"+
+"17 Place Pey Berland"+"\n"+
+"33077 Bordeaux Cédex"+"\n"+
+"Tél : "+$F{imputation_telGestionnaire}+"\n"+
+"Fax : "+$F{imputation_faxGestionnaire}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-16" mode="Opaque" x="243" y="300" width="293" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Facture N°  "+$F{facture_numeroFacture}.toString()+"  "+ "Exercice " + $F{facture_anneeEx}+"   N° Titre "+$F{facture_numeroTitre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-18" mode="Opaque" x="3" y="300" width="226" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{imputation_designation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-36" x="3" y="240" width="529" height="35"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Titre Exécutoire en application de l'article L.252A du livre des procédures fiscales, pris, émis et rendu exécutoire conformément aux dispositions du décret n°66-224 du 19 Août 1966, modifié par le décret n° 81-362 du 13 Avril 1981, relatif au recouvrement des produits des collectivités et établissements publics locaux.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="0" width="266" height="28"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Monsieur A. De BOUTEILLER
+Secrétaire Général de la Ville]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="280" width="527" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Le présent titre peut faire l'objet d'un recours devant le Tribunal Administratif de Bordeaux dans les 2 mois suivant sa réception.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="319" width="527" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="29"/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="165">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-33" positionType="Float" isPrintRepeatedValues="false" x="45" y="40" width="461" height="50"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["LE DETAIL DES OUVRAGES FACTURES FIGURE AU VERSO DE LA PAGE "]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="109" width="100" height="1"/>
+			</break>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" positionType="Float" x="0" y="125" width="540" height="9"/>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="par_numeroFacture">
+					<subreportParameterExpression><![CDATA[$F{facture_numeroFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="var_MontantTotalTypeFactureParPage" toVariable="MontantTotalTypeFactureParPage"/>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele}+ "FactureTLPEr2tBordeauxDetailPreEnseigne.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement key="subreport-2" positionType="Float" x="0" y="110" width="540" height="9"/>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="par_numeroFacture">
+					<subreportParameterExpression><![CDATA[$F{facture_numeroFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele}+  "FactureTLPEr2tBordeauxDetailEnseigne.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement key="subreport-2" positionType="Float" x="0" y="140" width="540" height="9"/>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="par_numeroFacture">
+					<subreportParameterExpression><![CDATA[$F{facture_numeroFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele}+  "FactureTLPEr2tBordeauxDetailEnseigneRappel.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" positionType="Float" x="0" y="155" width="540" height="9"/>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="par_numeroFacture">
+					<subreportParameterExpression><![CDATA[$F{facture_numeroFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="var_MontantTotalTypeFactureParPage" toVariable="MontantTotalTypeFactureParPage"/>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele}+ "FactureTLPEr2tBordeauxDetailPreEnseigneRappel.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="225" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-1" x="177" y="164" width="360" height="46" forecolor="#CCCCCC" backcolor="#F0F0F0"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-6" x="2" y="164" width="164" height="15">
+					<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.intValue()==1?true:false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="11" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[JOINDRE LE PRESENT AVIS ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-22" x="420" y="189" width="102" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_montantTotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-23" x="342" y="189" width="79" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_anneeEx}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-24" x="264" y="189" width="79" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_numeroTitre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-29" x="420" y="173" width="102" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MONTANT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-30" x="342" y="173" width="79" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[EXERCICE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="264" y="173" width="79" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[N° TITRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-32" x="186" y="173" width="79" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[COLLECTIVITE]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="2" y="181" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField" x="76" y="181" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-34" x="302" y="157" width="217" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Papillon à joindre à votre règlement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-37" x="186" y="189" width="79" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[10000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-38" x="521" y="189" width="14" height="17"/>
+				<textElement/>
+				<text><![CDATA[€]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-40" stretchType="RelativeToTallestObject" x="93" y="41" width="224" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Facture en euros payable sous 30 jours]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-41" x="2" y="41" width="87" height="15"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[<b>PAIEMENT :</b>]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-42" stretchType="RelativeToTallestObject" x="93" y="55" width="436" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Recette des Finances Ville de Bordeaux Annexe Hôtel de ville 33077 Bordeaux Cédex]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-43" stretchType="RelativeToTallestObject" x="93" y="69" width="62" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ - Caisse : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-44" stretchType="RelativeToTallestObject" x="93" y="83" width="196" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ - Par chèque bancaire ou postal,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-45" stretchType="RelativeToTallestObject" x="93" y="100" width="205" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Ecrire à la Mairie de Bordeaux ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" stretchType="RelativeToTallestObject" x="93" y="114" width="205" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Direction de la vie locale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-47" stretchType="RelativeToTallestObject" x="93" y="128" width="209" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Service de la Surveillance Administrative]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-48" stretchType="RelativeToTallestObject" x="93" y="142" width="142" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[33077 Bordeaux Cédex]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-50" x="2" y="100" width="89" height="15"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[<b>RECLAMATION :</b>]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-52" x="150" y="69" width="344" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[ouverte du lundi au vendredi de 8h30 à 16h00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-53" x="272" y="83" width="234" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[libellé à l'ordre du Trésor Public]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-64" x="328" y="142" width="166" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 03-06-2010 v3.50]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-65" x="326" y="98" width="193" height="36">
+					<printWhenExpression><![CDATA[new Boolean($F{facture_etat}.equals("preRefacturation")?true:false)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="22" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Pré refacturation]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-33" positionType="Float" x="10" y="10" width="262" height="15">
+					<printWhenExpression><![CDATA[new Boolean($F{facture_utiliserMontantDeSeuil}.equals("true"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Rappel : minimum de perception "+$F{facture_montantTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-33" positionType="Float" x="289" y="10" width="158" height="15">
+					<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.equals( $V{PAGE_COUNT} )?true:false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MONTANT TOTAL A PAYER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-62" positionType="Float" mode="Opaque" x="515" y="10" width="14" height="15" backcolor="#F0F0F0">
+					<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.equals( $V{PAGE_COUNT} )?true:false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[€]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-25" positionType="Float" mode="Opaque" x="455" y="10" width="60" height="15" backcolor="#F0F0F0">
+					<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.equals( $V{PAGE_COUNT} )?true:false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_utiliserMontantDeSeuil}.equals( "false" )?($F{facture_montantTotal}):($F{facture_montantTotal})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="6" width="527" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="20"/>
+	</lastPageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

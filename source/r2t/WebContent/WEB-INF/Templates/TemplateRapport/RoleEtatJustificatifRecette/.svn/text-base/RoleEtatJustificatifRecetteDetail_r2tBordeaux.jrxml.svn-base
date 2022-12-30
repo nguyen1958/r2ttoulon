@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoleEtatJustificatifRecetteDetail_r2tBordeaux" pageWidth="535" pageHeight="566" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="LeTypeDeTaxe" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Le type de taxe de la fature]]></parameterDescription>
+		<defaultValueExpression><![CDATA["PUB"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LeNbFactureTypeTaxeExercice" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LeNombreDePage" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="AnneeExercice" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NumeroBatch" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1843)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+(select count(facture.numeroFacture)  from facture, redevable WHERE
+     facture.typeTaxe = $P{LeTypeDeTaxe}
+AND facture.idBatchTraitement = $P{NumeroBatch}
+ AND redevable.numRedevable = idClient
+ AND facture.anneeEx = $P{AnneeExercice}
+ AND facture.etat NOT LIKE "preRefacturation") AS nbFacture,
+     facture.`montantTotal` AS facture_montantTotal,
+     redevable.`civilite` AS redevable_civilite,
+     redevable.`prenom` AS redevable_prenom,
+     redevable.`nomRedevable` AS redevable_nomRedevable,
+     redevable.`numRue` AS redevable_numRue,
+     redevable.`adresse1` AS redevable_adresse1,
+     redevable.`adresse2` AS redevable_adresse2,
+     redevable.`adresse3` AS redevable_adresse3,
+     redevable.`ville` AS redevable_ville,
+     redevable.`rdCedex` AS redevable_rdCedex,
+     redevable.`codePostal` AS redevable_codePostal,
+     facture.`anneeEx` AS facture_anneeEx,
+     facture.`numeroFacture` AS facture_numeroFacture,
+     facture.`numeroTitre` AS facture_numeroTitre,
+     redevable.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable
+FROM
+     `facture` facture,
+     `redevable` redevable
+WHERE
+     facture.typeTaxe = $P{LeTypeDeTaxe}
+AND facture.idBatchTraitement = $P{NumeroBatch}
+ AND redevable.numRedevable = idClient
+ AND facture.etat NOT LIKE "preRefacturation"
+AND facture.anneeEx = $P{AnneeExercice}
+order by
+	facture.`numeroTitre`,facture.`numeroFacture`]]>
+	</queryString>
+	<field name="nbFacture" class="java.lang.Long"/>
+	<field name="facture_montantTotal" class="java.lang.String"/>
+	<field name="redevable_civilite" class="java.lang.String"/>
+	<field name="redevable_prenom" class="java.lang.String"/>
+	<field name="redevable_nomRedevable" class="java.lang.String"/>
+	<field name="redevable_numRue" class="java.lang.String"/>
+	<field name="redevable_adresse1" class="java.lang.String"/>
+	<field name="redevable_adresse2" class="java.lang.String"/>
+	<field name="redevable_adresse3" class="java.lang.String"/>
+	<field name="redevable_ville" class="java.lang.String"/>
+	<field name="redevable_rdCedex" class="java.lang.String"/>
+	<field name="redevable_codePostal" class="java.lang.String"/>
+	<field name="facture_anneeEx" class="java.lang.String"/>
+	<field name="facture_numeroFacture" class="java.lang.Integer"/>
+	<field name="facture_numeroTitre" class="java.lang.String"/>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String"/>
+	<variable name="Max_REPORT_COUNT" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{REPORT_COUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="Instant_REPORT_COUNT" class="java.lang.Integer" resetType="None">
+		<variableExpression><![CDATA[$V{REPORT_COUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="MontantTotalParEluTypeTaxeExercice" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="62" splitType="Prevent">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-1" stretchType="RelativeToTallestObject" x="0" y="0" width="116" height="62" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(($V{REPORT_COUNT}.intValue()==1)||($F{nbFacture}.intValue()==$V{Max_REPORT_COUNT}.intValue())?true:false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_COUNT}.intValue()==1?"Du numéro "+ $F{facture_numeroTitre}:"Au numéro "+ $F{facture_numeroTitre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-2" stretchType="RelativeToTallestObject" x="118" y="0" width="116" height="62" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(($V{REPORT_COUNT}.intValue()==1)||($F{nbFacture}.intValue()==$V{Max_REPORT_COUNT}.intValue())?true:false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Facture "+
+$F{facture_numeroFacture}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-3" stretchType="RelativeToTallestObject" x="241" y="0" width="290" height="62" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(($V{REPORT_COUNT}.intValue()==1)||($F{nbFacture}.intValue()==$V{Max_REPORT_COUNT}.intValue())?true:false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{redevable_civilite}.equals("")?"":$F{redevable_civilite}+" ")+ 
+($F{redevable_nomRedevable}.equals("")?"":$F{redevable_nomRedevable})+
+($F{redevable_prenom}.equals("")?", ":$F{redevable_prenom}+", ") +
+($F{redevable_numRue}.equals("")||$F{redevable_numRue}.equals("0")?"":$F{redevable_numRue} + " ") + 
+($F{redevable_complementNumeroRueRedevable}.equals("")?"":$F{redevable_complementNumeroRueRedevable}+" ") +
+$F{redevable_adresse1}+ ", " +
+($F{redevable_adresse2}.equals("")?"":$F{redevable_adresse2}+", ")+
+($F{redevable_adresse3}.equals("")?"":$F{redevable_adresse3}+", ")+
+($F{redevable_codePostal}.equals("")?"":$F{redevable_codePostal})+
+($F{redevable_ville}.equals("")?"":" "+$F{redevable_ville})+
+(($F{redevable_rdCedex}.equals("true"))?" Cédex":"")+", " +
+"du Montant de " +
+$F{facture_montantTotal} + " Euros."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-23" x="317" y="49" width="159" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 20-05-2009 v3.43]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

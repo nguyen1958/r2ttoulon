@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesAnnulationsAnnuelToulon_SR_details_RecapMontantDesignation" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="dateDebutAnnee" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/01/2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFinAnnee" class="java.lang.String">
+		<defaultValueExpression><![CDATA["31/12/2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numeroBatch" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(242)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+i.`idImputation` AS imputation_idImputation,
+i.`designation` AS imputation_designation,
+
+f.`numeroFacture` AS facture_numeroFacture,
+f.`montantTotal` AS facture_montantTotal,
+f.`motifAnnulation` AS facture_motifAnnulation,
+f.`dateAnnulation` AS facture_dateAnnulation,
+
+r.`numRedevable` AS redevable_numRedevable,
+r.`nomRedevable` AS redevable_nomRedevable,
+r.`prenom` AS redevable_prenom,
+r.`civilite` AS redevable_civilite,
+r.`numRue` AS redevable_numRue,
+r.`adresse1` AS redevable_adresse1,
+r.`adresse2` AS redevable_adresse2,
+r.`adresse3` AS redevable_adresse3,
+r.`ville` AS redevable_ville,
+r.`rdCedex` AS redevable_rdCedex,
+r.`codePostal` AS redevable_codePostal,
+r.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable,
+
+eg.`raisonSocial` AS emplacementgeneral_raisonSocial,
+eg.`codeSecteur` AS emplacementgeneral_codeSecteur,
+eg.`numRue` AS emplacementgeneral_numRue,
+eg.`adresse1` AS emplacementgeneral_adresse1,
+eg.`adresse2` AS emplacementgeneral_adresse2,
+eg.`adresse3` AS emplacementgeneral_adresse3,
+eg.`codePostal` AS emplacementgeneral_codePostal,
+eg.`ville` AS emplacementgeneral_ville,
+eg.`cedex` AS emplacementgeneral_cedex,
+eg.`complementNumeroRueEmpl` AS emplacementgeneral_complementNumeroRueEmpl,
+eg.`numeroEmplacementPersonalise` AS emplacementgeneral_numeroEmplacementPersonalise,
+
+CAST(eg.`numeroEmplacementPersonalise` AS SIGNED INTEGER) AS emplacementgeneral_numeroEmplacementPersonaliseInt
+
+FROM imputation i,
+batchrapportcomptable br,
+lignefacture lf,
+facture f,
+article a,
+elementfacturation ef,
+emplacementgeneral eg,
+redevable r
+
+WHERE br.`idBatchRapportComptable` = $P{numeroBatch}
+
+AND i.`anneeExercice` = br.`annee`
+AND i.`idImputation` IN (3, 7)
+AND i.`idImputation` = lf.`idImputation`
+
+AND f.`etat` LIKE "ANNULEE"
+AND f.`numeroFacture` = lf.`idFacture`
+
+AND lf.`quantite` <> 0
+
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFinAnnee},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebutAnnee},'%d/%m/%Y')
+
+AND lf.`idArticle` = a.`id_article`
+AND a.`id_elementfacturation` = ef.`numero`
+AND ef.`numeroEmplacement` = eg.`numero`
+AND f.`idClient` = r.`numRedevable`
+
+GROUP BY facture_numeroFacture
+
+ORDER BY
+emplacementgeneral_codeSecteur ASC,
+imputation_designation ASC,
+emplacementgeneral_numeroEmplacementPersonaliseInt ASC,
+redevable_numRedevable ASC,
+facture_numeroFacture]]>
+	</queryString>
+	<field name="imputation_idImputation" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_numeroFacture" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_montantTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_motifAnnulation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_dateAnnulation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_civilite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_rdCedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_raisonSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codeSecteur" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_cedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_complementNumeroRueEmpl" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numeroEmplacementPersonalise" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numeroEmplacementPersonaliseInt" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="MontantDesignation" class="java.lang.Double" resetType="Group" resetGroup="GrandeTaxe" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+	</variable>
+	<group name="GrandeTaxe">
+		<groupExpression><![CDATA[$F{imputation_idImputation}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="18" splitType="Prevent">
+				<textField pattern="#,## €0.00">
+					<reportElement x="255" y="2" width="120" height="15"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantDesignation}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1" y="2" width="250" height="15"/>
+					<textElement markup="none">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total - " + $F{imputation_designation} + " :"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

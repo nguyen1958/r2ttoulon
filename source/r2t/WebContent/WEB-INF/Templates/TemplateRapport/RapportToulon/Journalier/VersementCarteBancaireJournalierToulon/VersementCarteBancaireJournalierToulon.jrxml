@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true">
+	<style name="style1" isDefault="false" pattern=""/>
+	<parameter name="par_CheminModele" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NumeroBatch" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(460)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+(SELECT  parametresmairie.`ville` FROM parametresmairie) AS villemairie,
+(
+	SELECT periode FROM batchrapportcomptable brc
+	WHERE brc.idBatchRapportComptable = $P{NumeroBatch}
+) AS periode,
+(SELECT SUM( l.`montantPayement`)
+	FROM 	`payement` p,`typepayement` tp,
+		`lignepayement` l
+		JOIN batchrapportcomptable brc
+		ON brc.`idBatchRapportComptable` = $P{NumeroBatch}
+	WHERE l.idPayement = p.idPayement
+	AND p.datePayement =  brc.periode
+	AND p.`idTypePayement` = tp.`idTypePayement`
+	AND p.etat LIKE "valide"
+	AND tp.`typepayement` !="Remise"
+	AND p.`numeroTransaction`<>0
+	AND tp.`idTypePayement` = 5
+) AS total
+FROM payement]]>
+	</queryString>
+	<field name="villemairie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="periode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="FDouble1" class="java.lang.Object">
+		<variableExpression><![CDATA[new DecimalFormat("#,##0.00€")]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="-20" width="116" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 01/02/2010]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="70">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="61"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["République Française, Département du Var, Ville de " + $F{villemairie} +", Régie des emplacements\n"+
+"Versements de cartes bancaires\n"+
+"Le "+ DateFormat.getDateInstance(DateFormat.LONG).format(new Date())+"\n"+
+"Quittances en date du "+$F{periode}+"\n"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="270" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="20" y="165" width="490" height="100"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["\nQuittances en date du " + $F{periode} + "\n\n"
++ "Total Général = " + ($F{total}==null?new Double(0.00):$F{total}) + " €"
++ "\n\n" + $F{villemairie} +", le " + DateFormat.getDateInstance(DateFormat.LONG).format(new Date())
++ "\nLe Régisseur Comptable"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="18" width="555" height="100"/>
+				<subreportParameter name="DatedeQuittance">
+					<subreportParameterExpression><![CDATA[$F{periode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "VersementCarteBancaireJournalierToulon_SR_Quittances.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="136" width="100" height="1"/>
+			</break>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" positionType="Float" x="470" y="5" width="74" height="15"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

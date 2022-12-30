@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Elu_r2tBordeauxV1" pageWidth="340" pageHeight="141" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="340" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="AnneeExercice" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LeTypeDeTaxe" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Le type de taxe de la fature]]></parameterDescription>
+		<defaultValueExpression><![CDATA["DDV"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     imputation.`eluRenseignement1` AS imputation_eluRenseignement1,
+     imputation.`eluRenseignement2` AS imputation_eluRenseignement2,
+     imputation.`nomElu` AS imputation_nomElu,
+     imputation.`eluRenseignement3` AS imputation_eluRenseignement3
+FROM
+     `imputation` imputation
+WHERE
+     imputation.anneeExercice = $P{AnneeExercice}
+ AND imputation.libelle = $P{LeTypeDeTaxe}]]>
+	</queryString>
+	<field name="imputation_eluRenseignement1" class="java.lang.String"/>
+	<field name="imputation_eluRenseignement2" class="java.lang.String"/>
+	<field name="imputation_nomElu" class="java.lang.String"/>
+	<field name="imputation_eluRenseignement3" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="67">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-1" positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="16" width="306" height="51" isRemoveLineWhenBlank="true"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[(!($F{imputation_eluRenseignement1}.equals(""))?$F{imputation_eluRenseignement1}+"\n":"")+
+(!($F{imputation_eluRenseignement2}.equals(""))?$F{imputation_eluRenseignement2}+"\n":"")+
+(!($F{imputation_eluRenseignement3}.equals(""))?$F{imputation_eluRenseignement3}+"\n":"")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-2" positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="0" width="213" height="17"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{imputation_nomElu}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-23" x="213" y="4" width="117" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 20-05-2009 v3.43]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

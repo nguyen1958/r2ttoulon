@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesAnnulationsAnnuelToulon_SR_details" pageWidth="842" pageHeight="802" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebutAnnee" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/01/2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFinAnnee" class="java.lang.String">
+		<defaultValueExpression><![CDATA["31/12/2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numeroBatch" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(242)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+i.`idImputation` AS imputation_idImputation,
+i.`designation` AS imputation_designation,
+
+f.`numeroFacture` AS facture_numeroFacture,
+f.`montantTotal` AS facture_montantTotal,
+f.`motifAnnulation` AS facture_motifAnnulation,
+f.`dateAnnulation` AS facture_dateAnnulation,
+
+r.`numRedevable` AS redevable_numRedevable,
+r.`nomRedevable` AS redevable_nomRedevable,
+r.`prenom` AS redevable_prenom,
+r.`civilite` AS redevable_civilite,
+r.`numRue` AS redevable_numRue,
+r.`adresse1` AS redevable_adresse1,
+r.`adresse2` AS redevable_adresse2,
+r.`adresse3` AS redevable_adresse3,
+r.`ville` AS redevable_ville,
+r.`rdCedex` AS redevable_rdCedex,
+r.`codePostal` AS redevable_codePostal,
+r.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable,
+
+eg.`raisonSocial` AS emplacementgeneral_raisonSocial,
+eg.`codeSecteur` AS emplacementgeneral_codeSecteur,
+eg.`numRue` AS emplacementgeneral_numRue,
+eg.`adresse1` AS emplacementgeneral_adresse1,
+eg.`adresse2` AS emplacementgeneral_adresse2,
+eg.`adresse3` AS emplacementgeneral_adresse3,
+eg.`codePostal` AS emplacementgeneral_codePostal,
+eg.`ville` AS emplacementgeneral_ville,
+eg.`cedex` AS emplacementgeneral_cedex,
+eg.`complementNumeroRueEmpl` AS emplacementgeneral_complementNumeroRueEmpl,
+eg.`numeroEmplacementPersonalise` AS emplacementgeneral_numeroEmplacementPersonalise,
+
+CAST(eg.`numeroEmplacementPersonalise` AS SIGNED INTEGER) AS emplacementgeneral_numeroEmplacementPersonaliseInt
+
+FROM imputation i,
+batchrapportcomptable br,
+lignefacture lf,
+facture f,
+article a,
+elementfacturation ef,
+emplacementgeneral eg,
+redevable r
+
+WHERE br.`idBatchRapportComptable` = $P{numeroBatch}
+
+AND i.`anneeExercice` = br.`annee`
+AND i.`idImputation` IN (3, 7)
+AND i.`idImputation` = lf.`idImputation`
+
+AND f.`etat` LIKE "ANNULEE"
+AND f.`numeroFacture` = lf.`idFacture`
+
+AND lf.`quantite` <> 0
+
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFinAnnee},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebutAnnee},'%d/%m/%Y')
+
+AND lf.`idArticle` = a.`id_article`
+AND a.`id_elementfacturation` = ef.`numero`
+AND ef.`numeroEmplacement` = eg.`numero`
+AND f.`idClient` = r.`numRedevable`
+
+GROUP BY facture_numeroFacture
+
+ORDER BY
+emplacementgeneral_codeSecteur ASC,
+imputation_designation ASC,
+emplacementgeneral_numeroEmplacementPersonaliseInt ASC,
+redevable_numRedevable ASC,
+facture_numeroFacture]]>
+	</queryString>
+	<field name="imputation_idImputation" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_numeroFacture" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_montantTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_motifAnnulation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_dateAnnulation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_civilite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_rdCedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_raisonSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codeSecteur" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_cedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_complementNumeroRueEmpl" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numeroEmplacementPersonalise" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_numeroEmplacementPersonaliseInt" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="MontantDesignation" class="java.lang.Double" resetType="Group" resetGroup="GrandeTaxe" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+	</variable>
+	<variable name="MontantTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+	</variable>
+	<variable name="MontantSecteur" class="java.lang.Double" resetType="Group" resetGroup="secteur" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+	</variable>
+	<variable name="MontantEmplacement" class="java.lang.Double" resetType="Group" resetGroup="Emplacement" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+	</variable>
+	<group name="GrandeTaxe" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{imputation_idImputation}]]></groupExpression>
+		<groupHeader>
+			<band height="17" splitType="Prevent">
+				<textField>
+					<reportElement positionType="Float" x="0" y="1" width="500" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Ventilation par emplacement - " + $F{imputation_designation}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<textField pattern="#,## €0.00">
+					<reportElement x="230" y="1" width="120" height="15"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantDesignation}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1" y="1" width="225" height="15"/>
+					<textElement markup="none">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total - " + $F{imputation_designation} + " :"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="secteur" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{emplacementgeneral_codeSecteur}]]></groupExpression>
+		<groupHeader>
+			<band height="17" splitType="Prevent">
+				<textField>
+					<reportElement x="0" y="1" width="500" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["- Secteur " +$F{emplacementgeneral_codeSecteur}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<textField pattern="#,## €0.00">
+					<reportElement x="230" y="1" width="120" height="15"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantSecteur}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="1" y="1" width="225" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<text><![CDATA[Total pour ce secteur : ]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Emplacement">
+		<groupExpression><![CDATA[$F{emplacementgeneral_numeroEmplacementPersonalise}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<rectangle>
+					<reportElement x="0" y="35" width="806" height="15"/>
+				</rectangle>
+				<line>
+					<reportElement x="702" y="35" width="1" height="15"/>
+				</line>
+				<staticText>
+					<reportElement x="704" y="36" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Montant]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="1" width="400" height="34"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{imputation_designation} + ", Emplacement " + $F{emplacementgeneral_codeSecteur} + " " + $F{emplacementgeneral_numeroEmplacementPersonalise} + "\n"
++ "Activité: " + $F{emplacementgeneral_raisonSocial} + "\n"
++ ($F{emplacementgeneral_numRue}.equals("0")?"":$F{emplacementgeneral_numRue} + " ")
++ ($F{emplacementgeneral_complementNumeroRueEmpl}.equals("")?"":$F{emplacementgeneral_complementNumeroRueEmpl} + " ")
++ ($F{emplacementgeneral_adresse1}.equals("")?"":$F{emplacementgeneral_adresse1} + " ")
++ ($F{emplacementgeneral_adresse2}.equals("")?"":$F{emplacementgeneral_adresse2} + " ")
++ ($F{emplacementgeneral_adresse3}.equals("")?"":$F{emplacementgeneral_adresse3} + " ")
++ ($F{emplacementgeneral_codePostal}.equals("")?"":$F{emplacementgeneral_codePostal} + " ")
++ ($F{emplacementgeneral_ville}.equals("")?"":$F{emplacementgeneral_ville})
++ ($F{emplacementgeneral_cedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="406" y="2" width="400" height="34"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Redevable " + $F{redevable_numRedevable} + "\n"
++ ($F{redevable_civilite}.equals("")?"":$F{redevable_civilite} + " ")
++ $F{redevable_nomRedevable} + " " + $F{redevable_prenom} + "\n"
++ ($F{redevable_numRue}.equals("0")?"":$F{redevable_numRue} + " ")
++ ($F{redevable_complementNumeroRueRedevable}.equals("")?"":$F{redevable_complementNumeroRueRedevable} + " ")
++ ($F{redevable_adresse1}.equals("")?"":$F{redevable_adresse1} + " ")
++ ($F{redevable_adresse2}.equals("")?"":$F{redevable_adresse2} + " ")
++ ($F{redevable_adresse3}.equals("")?"":$F{redevable_adresse3} + " ")
++ ($F{redevable_codePostal}.equals("")?"":$F{redevable_codePostal} + " ")
++ ($F{redevable_ville}.equals("")?"":$F{redevable_ville})
++ ($F{redevable_rdCedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="153" y="35" width="1" height="15"/>
+				</line>
+				<staticText>
+					<reportElement mode="Transparent" x="2" y="36" width="150" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Numéro de la Facture]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="156" y="36" width="440" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Motif de l'annulation]]></text>
+				</staticText>
+				<line>
+					<reportElement x="598" y="35" width="1" height="15"/>
+				</line>
+				<staticText>
+					<reportElement x="600" y="36" width="100" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Date annulation]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<staticText>
+					<reportElement x="602" y="1" width="150" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<text><![CDATA[Total pour cet emplacement : ]]></text>
+				</staticText>
+				<textField pattern="#,## €0.00">
+					<reportElement x="688" y="1" width="118" height="15"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantEmplacement}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Prevent">
+			<rectangle>
+				<reportElement x="0" y="0" width="806" height="16"/>
+			</rectangle>
+			<line>
+				<reportElement x="702" y="0" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="153" y="0" width="1" height="16"/>
+			</line>
+			<textField>
+				<reportElement mode="Transparent" x="2" y="2" width="150" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{facture_numeroFacture}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="704" y="2" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_montantTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="2" width="440" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_motifAnnulation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="600" y="2" width="100" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_dateAnnulation}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="598" y="0" width="1" height="15"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="47" splitType="Stretch">
+			<break>
+				<reportElement x="0" y="1" width="100" height="1"/>
+			</break>
+			<textField pattern="#,## €0.00">
+				<reportElement positionType="Float" x="255" y="30" width="120" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="30" width="250" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Total des annulations pour tous les rôles annuel :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="701" y="2" width="116" height="15">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 23/02/2010]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="3" width="375" height="15"/>
+				<subreportParameter name="dateDebutAnnee">
+					<subreportParameterExpression><![CDATA[$P{dateDebutAnnee}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numeroBatch">
+					<subreportParameterExpression><![CDATA[$P{numeroBatch}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dateFinAnnee">
+					<subreportParameterExpression><![CDATA[$P{dateFinAnnee}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "ListeDesAnnulationsAnnuelToulon_SR_details_RecapMontantDesignation.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

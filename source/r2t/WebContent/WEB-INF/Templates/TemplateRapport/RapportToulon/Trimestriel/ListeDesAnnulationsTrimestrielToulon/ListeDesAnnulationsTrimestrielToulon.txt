@@ -1,0 +1,22 @@
+ListeDesAnnulationsTrimestrielToulon
+-----------------------------------
+f.`typeTaxe` NOT IN ('TLPE','ETALAGE')   //,'pub','TICKET_MARCHE')
+
+
+
+Version du 27/09/2012
+---------------------
+Ajout du rejet des taxes non pris en compte dans les sous rapports : 
+ ListeDesAnnulationsToulon_SR_details 
+ ListeDesAnnulationsToulon_SR_details_RecapMontantDesignation
+ ListeDesRemisesToulon_SR_details
+ ListeDesRemisesToulon_SR_details_RecapMontantDesignation
+
+
+Rejet des taxes : 'TLPE','ETALAGE'
+
+
+Le 31/12/2013
+-----------
+A jout de $P{numeroBatch} dans la requête du sous rapport 
+ListeDesRemisesToulon_SR_details_RecapMontantDesignation

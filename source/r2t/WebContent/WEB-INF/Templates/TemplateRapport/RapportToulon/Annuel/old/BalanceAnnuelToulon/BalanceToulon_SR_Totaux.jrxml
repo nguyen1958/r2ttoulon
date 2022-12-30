@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BalanceAnnuelToulon_SR_DetailMontant" pageWidth="802" pageHeight="802" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="dateFin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["31/12/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebut" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/01/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anneeExercice" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2012"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+
+(SELECT SUM(f.montantTotal)
+FROM facture f
+WHERE (f.`etat` LIKE "Valide" OR f.`etat` LIKE "ANNULEE" OR f.`etat` LIKE "Factice")
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+AND f.`typeTaxe` NOT IN ('pub','TICKET_MARCHE')
+) AS constatation,
+
+(SELECT SUM(l.`montantPayement`)
+FROM facture f,
+lignepayement l,
+typepayement t,
+payement p
+WHERE l.`idFacture` = f.`idFacture`
+AND l.`idPayement` = p.`idPayement`
+AND (f.`etat` LIKE "Valide" OR f.`etat` LIKE "Factice")
+AND p.`etat` LIKE "Valide"
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+AND p.idTypePayement =t.idTypePayement
+AND   t.`typepayement` != "remise"
+AND f.`typeTaxe` NOT IN ('pub','TICKET_MARCHE')
+) AS perception,
+
+(SELECT SUM(payement.montantPayement )
+FROM payement, typepayement, `lignepayement`, facture f
+WHERE payement.idTypePayement = typepayement.idTypePayement
+AND   typepayement = "remise"
+AND `lignepayement`.`idPayement`= payement.`idPayement`
+AND f.`idFacture` = `lignepayement`.`idFacture`
+AND f.`etat` LIKE "Valide"
+AND payement.`etat` LIKE "Valide"
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+AND f.`typeTaxe` NOT IN ('pub','TICKET_MARCHE')
+) AS remise,
+
+(SELECT SUM(f.montantTotal)
+FROM facture f
+WHERE f.`etat` LIKE "ANNULEE"
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')
+AND f.`typeTaxe` NOT IN ('pub','TICKET_MARCHE')
+
+) AS annulationRemise
+
+FROM facture f
+
+WHERE f.`anneeEx` = $P{anneeExercice}
+AND (f.`etat` LIKE "Valide" OR f.`etat` LIKE "ANNULEE" OR f.`etat` LIKE "Factice")
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFin},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebut},'%d/%m/%Y')]]>
+	</queryString>
+	<field name="constatation" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="perception" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remise" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="annulationRemise" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="excedent" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{perception}.doubleValue()-$F{constatation}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="poursuite" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{annulationRemise}==null?
+new Double($F{constatation}.doubleValue()-$V{vremise}.doubleValue()-($F{perception}==null?new Double(0.00).doubleValue():$F{perception}.doubleValue()))
+:new Double($F{constatation}.doubleValue()-$F{perception}.doubleValue()-$F{annulationRemise}.doubleValue()-$V{vremise}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vannulationremise" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{annulationRemise}==null?new Double(0.00):new Double($F{annulationRemise}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vremise" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{remise}==null?new Double(0.00):new Double($F{remise}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vperception" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{perception}==null?new Double(0.00):new Double($F{perception}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vconstatation" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{constatation}==null?new Double(0.00):new Double($F{constatation}.doubleValue())]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="120" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="270" y="10" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{constatation}==null?new Double(0.00):$F{constatation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="380" y="10" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{perception}==null?new Double(0.00):$F{perception}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="490" y="10" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($V{vconstatation}.doubleValue()-$V{vperception}.doubleValue()-$V{vannulationremise}.doubleValue()-$V{vremise}.doubleValue())==null?
+new Double(0.00):
+new Double($V{vconstatation}.doubleValue()-$V{vperception}.doubleValue()-$V{vannulationremise}.doubleValue()-$V{vremise}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="600" y="10" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($V{vannulationremise}.doubleValue()+$V{vremise}.doubleValue())==null?
+new Double(0.00):new Double($V{vannulationremise}.doubleValue()+$V{vremise}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="710" y="10" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{excedent}==null?new Double(0.00):$V{excedent}.doubleValue()<=0.00?new Double(0.00):$V{excedent}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="10" width="229" height="15"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Totaux :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="75" y="84" width="134" height="30"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Le Régisseur"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="224" y="84" width="217" height="30"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["La Responsable du service\n" + "des Affaires Juridiques"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="454" y="84" width="134" height="30"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Le Maire"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="603" y="84" width="189" height="30"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Le Trésorier Principal\n" + "Municipal"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="60" width="327" height="14"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Le " + DateFormat.getDateInstance(DateFormat.LONG).format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="555" y="43" width="136" height="17">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[version 20/12/2012 IR 3.5.2]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,4 @@
+modif du 04/02/2013
+-------------------
+Rapport ToulonMarcheRecapMensuelParMarche_sr1
+Ajout de la condition AND bareme.`anExercice` = br.`annee` pour distinguer le barème de l'année

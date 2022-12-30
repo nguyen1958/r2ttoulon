@@ -1,0 +1,66 @@
+Modif template facture
+
+SPECIFICATIONS
+--------------
+KIOSQUE - AMBULANT - ODP - STATIONNEMENT - MARCHE TRIMESTRIEL 
+ 
+Ecrire la mention : INFORMATIONS IMPORTANTES
+Les tarifs des redevances applicables du 1er janvier au 31 décembre 2014, ont été 
+décidés par Délibération du Conseil Municipal
+du 22/11/2013. Tout trimestre commencé est dû en
+totalité et payable dès réception du présent avis.
+ 
+MANIFESTATIONS DIVERSES 
+Ecrire la mention INFORMATIONS IMPORTANTES
+Redevance pour occupation du domaine public, 
+établie en application de la délibération du Conseil 
+Municipal du 22 novembre 2013, qui a fixé les tarifs
+applicables pour l'année 2014 à compter du 1er janvier.
+ 
+MARCHE MENSUEL 
+Ecrire la mention INFORMATIONS IMPORTANTES
+Les tarifs des redevances applicables du 1er
+janvier au 31 décembre 2014, ont été 
+décidés par Délibération du Conseil Municipal
+du 22/11/2013. Tout mois commencé est dû en
+totalité et payable dès réception du présent avis.
+ 
+ETALAGE
+Ecrire la mention INFORMATIONS IMPORTANTES
+Les tarifs des redevances applicables du 1er
+janvier au 31 décembre 2014, ont été 
+décidés par Délibération du Conseil Municipal
+du 22/11/2013. Tout année commencé est due en
+totalité et payable dès réception du présent avis. 
+
+MODIFICATIONS
+-------------
+
+Le 04/12/2013
+------------
+
+Pour toutes les factures paramètrage de la zone de délibération
+ajout dans la bd dans la table parametre un attribut = dateDeliberation, il faut prendre la valeur 
+
+"INFORMATIONS IMPORTANTES\n" +
+"Les tarifs des redevances applicables du 1er janv au 31 décembre " + $F{facture_anneeEx}+"\n" +
+"ont été décidés par Délibération du Conseil Municipal du " + $F{dateDeliberation}+ ".\n" +
+
+J'ai mis la date de la facture pour la période d'application
+
+Le 31/12/2013
+-------------
+Changement du code postal par le code société CS 71 407
+
+Le 02/01/2014
+-------------
+Affichage de l'encart remarque imprortante sur facture normale générique
+Mise en gras de remarques importantes
+
+Le 03/01/2014
+-------------
+Changement du code postal par le code société CS 71 407 dans l'encart du milieu
+
+Le 21/01/2014
+-------------
+Changement de la propriété de l'encart de renseignement des horaire à tallest objetct

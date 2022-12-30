@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoleFacturationAdresseTaxee_r2tBordeaux" pageWidth="226" pageHeight="842" columnWidth="226" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="LaFacture" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(2009000128)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     emplacementgeneral.`numRue` AS emplacementgeneral_numRue,
+     emplacementgeneral.`adresse1` AS emplacementgeneral_adresse1,
+     emplacementgeneral.`adresse2` AS emplacementgeneral_adresse2,
+     emplacementgeneral.`adresse3` AS emplacementgeneral_adresse3,
+     emplacementgeneral.`codePostal` AS emplacementgeneral_codePostal,
+     emplacementgeneral.`ville` AS emplacementgeneral_ville,
+     emplacementgeneral.`cedex` AS emplacementgeneral_cedex,
+     emplacementgeneral.`complementNumeroRueEmpl` AS emplacementgeneral_complementNumeroRueEmpl
+FROM
+     `facture` facture,
+     `redevable` redevable,
+     `emplacementgeneral` emplacementgeneral,
+     `article` article,
+     `lignefacture` lignefacture,
+     `elementfacturation` elementfacturation
+WHERE
+     facture.numeroFacture = $P{LaFacture}
+ AND redevable.numRedevable = facture.idClient
+ AND emplacementgeneral.numRedevable = redevable.numRedevable
+ AND lignefacture.idFacture = facture.numeroFacture
+ AND article.id_article = lignefacture.idArticle
+ AND elementfacturation.numero = article.id_elementfacturation
+ AND emplacementgeneral.numero = elementfacturation.numeroEmplacement]]>
+	</queryString>
+	<field name="emplacementgeneral_numRue" class="java.lang.String"/>
+	<field name="emplacementgeneral_adresse1" class="java.lang.String"/>
+	<field name="emplacementgeneral_adresse2" class="java.lang.String"/>
+	<field name="emplacementgeneral_adresse3" class="java.lang.String"/>
+	<field name="emplacementgeneral_codePostal" class="java.lang.String"/>
+	<field name="emplacementgeneral_ville" class="java.lang.String"/>
+	<field name="emplacementgeneral_cedex" class="java.lang.String"/>
+	<field name="emplacementgeneral_complementNumeroRueEmpl" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="18">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-1" stretchType="RelativeToTallestObject" x="2" y="1" width="224" height="14"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{emplacementgeneral_numRue}.equals("")||$F{emplacementgeneral_numRue}.equals("0")?"":$F{emplacementgeneral_numRue}+" ") + 
+($F{emplacementgeneral_complementNumeroRueEmpl}.equals("")?"":$F{emplacementgeneral_complementNumeroRueEmpl} +" ")+
+($F{emplacementgeneral_adresse1}.equals("")?"":$F{emplacementgeneral_adresse1}) +
+($F{emplacementgeneral_adresse2}.equals("")?"":"\n"+$F{emplacementgeneral_adresse2})+
+($F{emplacementgeneral_adresse3}.equals("")?"":"\n"+$F{emplacementgeneral_adresse3})+
+($F{emplacementgeneral_codePostal}.equals("")?"":"\n"+$F{emplacementgeneral_codePostal}+ " ")+ 
+($F{emplacementgeneral_ville}.equals("")?"":$F{emplacementgeneral_ville})+
+($F{emplacementgeneral_cedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

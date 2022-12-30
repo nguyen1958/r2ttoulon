@@ -1,0 +1,12 @@
+Rapport ListeDesImpayesAnnuelEtalageToulon
+
+
+Modif 21/12/2012
+-----------------------------------------
+Prise en compte du pb : Le problème provient de la suppression de redevables qui sont déjà facturés au mois d'avril 2012
+Ajout dans requête
+FROM facture f, imputation i , redevable r 
+
+AND r.numRedevable=f.idClient
+
+

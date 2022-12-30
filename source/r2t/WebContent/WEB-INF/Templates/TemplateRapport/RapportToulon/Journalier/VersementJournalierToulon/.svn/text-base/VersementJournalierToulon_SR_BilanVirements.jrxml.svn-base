@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VersementJournalierToulon_SR_BilanVirements" pageWidth="442" pageHeight="802" columnWidth="442" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="datedeArrete" class="java.lang.String">
+		<defaultValueExpression><![CDATA["20/10/2009"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+	(SELECT SUM( l.`montantPayement`)
+	FROM 	`payement` p,`lignepayement` l,`typepayement` tp
+		
+	WHERE
+		l.idPayement = p.idPayement
+		AND p.datePayement = $P{datedeArrete}
+            	AND p.etat LIKE "valide"
+           	AND p.idTypePayement = 1
+		AND (p.`numeroCheque`<>0 OR p.idBanque = 123)
+		AND p.`idTypePayement` = tp.`idTypePayement`
+		AND tp.`typepayement` !="Remise"
+	) AS TotalversementPeriode,
+    	(SELECT COUNT( l.`montantPayement`)
+	FROM `payement` p,`lignepayement` l,`typepayement` tp
+	WHERE
+		l.idPayement = p.idPayement
+		AND p.datePayement = $P{datedeArrete}
+		AND p.etat LIKE "valide"
+           	AND p.idTypePayement = 1
+		AND (p.`numeroCheque`<>0 OR p.idBanque = 123)
+		AND p.`idTypePayement` = tp.`idTypePayement`
+		AND tp.`typepayement` !="Remise"
+) AS NombrePayement
+FROM payement p]]>
+	</queryString>
+	<field name="TotalversementPeriode" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NombrePayement" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="192" height="20"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="Courier New" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Total virements"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="64" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{NombrePayement}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="363" y="0" width="75" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{TotalversementPeriode}==null?new Double(0.00):$F{TotalversementPeriode}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="37">
+			<staticText>
+				<reportElement x="64" y="17" width="160" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 22/03/2012 IR3.5.2]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

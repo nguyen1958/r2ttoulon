@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoleSuiviFacturation_r2tBordeauxV1" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[".\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="UtilisateurDemandeur" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Pascal ZACCHELLO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateDebutPeriode" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["01/01/2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateFinPeriode" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["19/12/2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TypeTaxe" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["DDV"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateRole" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["12-23-2008"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AnneeExercice" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2008"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NumeroBatch" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1809)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     facture.`numeroTitre` AS facture_numeroTitre,
+     redevable.`nomRedevable` AS redevable_nomRedevable,
+     redevable.`adresse1` AS redevable_adresse1,
+     redevable.`adresse2` AS redevable_adresse2,
+     redevable.`adresse3` AS redevable_adresse3,
+     redevable.`rdCedex` AS redevable_rdCedex,
+     redevable.`codePostal` AS redevable_codePostal,
+     redevable.`numRue` AS redevable_numRue,
+     redevable.`ville` AS redevable_ville,
+     facture.`montantTotal` AS facture_montantTotal,
+     redevable.`prenom` AS redevable_prenom,
+     redevable.`civilite` AS redevable_civilite,
+     facture.`etat` AS facture_etat,
+     facture.`numeroFacture` AS facture_numeroFacture,
+     facture.`solde` AS facture_solde,
+     imputation.`designation` AS imputation_designation,
+     redevable.`complementNumeroRueRedevable` AS redevable_complementNumeroRueRedevable,
+     (SELECT  parametresmairie.`ville` FROM parametresmairie) AS villemairie
+FROM
+     `facture` facture,
+     `redevable` redevable,
+     `imputation` imputation
+WHERE
+     facture.idclient = redevable.numRedevable
+ AND facture.typeTaxe = $P{TypeTaxe}
+ AND imputation.libelle = facture.typeTaxe
+ AND facture.etat NOT LIKE "preRefacturation"
+ AND STR_TO_DATE(facture.dateCreation,'%d/%m/%Y') >= STR_TO_DATE($P{DateDebutPeriode},'%d/%m/%Y')
+ AND STR_TO_DATE(facture.dateCreation,'%d/%m/%Y') <= STR_TO_DATE($P{DateFinPeriode},'%d/%m/%Y')
+GROUP BY
+     facture.idFacture
+ORDER BY
+     facture.`numeroTitre` ASC,
+     facture.`numeroFacture` ASC]]>
+	</queryString>
+	<field name="facture_numeroTitre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_adresse3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_rdCedex" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_codePostal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_numRue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_ville" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_montantTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_civilite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_etat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_numeroFacture" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_solde" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="redevable_complementNumeroRueRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="villemairie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DateDuJour" class="java.util.Date">
+		<variableExpression><![CDATA[new Date()]]></variableExpression>
+		<initialValueExpression><![CDATA[new Date()]]></initialValueExpression>
+	</variable>
+	<variable name="MontantTotalTypeFactureParTypeTaxe" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="MontantTotalSoldeFactureParPage" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_solde})]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="montantFactureRetour" class="java.lang.Double" resetType="None" calculation="System">
+		<variableExpression><![CDATA[$V{montantFactureRetour}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="montantReportIncPage" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{montantFactureRetour}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="montantSoldeRetour" class="java.lang.Double" calculation="System">
+		<variableExpression><![CDATA[$V{montantSoldeRetour}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SoldeReporIncPage" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{montantSoldeRetour}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="MontantTotalTypeFactureParPage" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{facture_montantTotal})]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band height="95">
+			<rectangle>
+				<reportElement key="rectangle-1" positionType="FixRelativeToBottom" mode="Transparent" x="4" y="66" width="772" height="29"/>
+			</rectangle>
+			<line>
+				<reportElement key="line-1" x="62" y="66" width="1" height="29"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-4" x="65" y="69" width="56" height="25"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Numéro
+facture]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="136" y="69" width="143" height="25"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Nom du redevable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="597" y="69" width="40" height="14"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Solde]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="536" y="69" width="58" height="25"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Montant
+dû]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="327" y="69" width="121" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Adresse(s) taxée(s)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="7" y="69" width="53" height="25"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Numero
+Titre]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="133" y="66" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="324" y="66" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement key="line-4" x="533" y="66" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement key="line-5" x="594" y="66" width="1" height="29"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-10" x="654" y="68" width="56" height="25"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Annulation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="708" y="69" width="67" height="25"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Réclamation]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-6" x="651" y="66" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement key="line-7" x="708" y="66" width="1" height="29"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-34" x="0" y="38" width="782" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Rôle de suivi de facturation RSF_"+
+$P{TypeTaxe}+"_"+$P{DateRole}+" - Type de taxe : " +
+$F{imputation_designation}+ " pour la période du " +
+$P{DateDebutPeriode}+ " au " +$P{DateFinPeriode}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d MMMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-12" x="598" y="0" width="170" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{villemairie} + ", le " +
+DateFormat.getDateInstance(DateFormat.LONG).format(new Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="195" height="25"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Mairie de " + $F{villemairie} +
+"\nDirection de la vie locale"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Prevent"/>
+	</columnHeader>
+	<detail>
+		<band height="47">
+			<rectangle>
+				<reportElement key="rectangle-2" stretchType="RelativeToBandHeight" mode="Transparent" x="4" y="0" width="772" height="47" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-15" x="7" y="3" width="53" height="13"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_numeroTitre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-16" x="65" y="3" width="65" height="13"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{facture_numeroFacture}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-17" stretchType="RelativeToTallestObject" x="136" y="3" width="188" height="37"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{redevable_civilite}.equals("")?"":$F{redevable_civilite} + " ")+
+$F{redevable_nomRedevable}+ " " + $F{redevable_prenom} + "\n" +
+($F{redevable_numRue}.equals("")?"":$F{redevable_numRue} + " ") + 
+($F{redevable_complementNumeroRueRedevable}.equals("")?"":$F{redevable_complementNumeroRueRedevable}+" ") +
+$F{redevable_adresse1} + "\n" +
+($F{redevable_adresse2}.equals("")?"":$F{redevable_adresse2}+"\n")+
+($F{redevable_adresse3}.equals("")?"":$F{redevable_adresse3}+"\n")+
+($F{redevable_codePostal}.equals("")?"":$F{redevable_codePostal}+ " ") +
+($F{redevable_ville}.equals("")?"":$F{redevable_ville} +" ")+
+($F{redevable_rdCedex}.equals("true")?" Cédex":"")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,## €0.00" isBlankWhenNull="false">
+				<reportElement key="textField-18" x="536" y="3" width="58" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($F{facture_montantTotal})]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToTallestObject" x="325" y="3" width="204" height="37"/>
+				<subreportParameter name="LaFacture">
+					<subreportParameterExpression><![CDATA[$F{facture_numeroFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="montantSolde">
+					<subreportParameterExpression><![CDATA[new Double($F{facture_solde})]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="montantFacture">
+					<subreportParameterExpression><![CDATA[new Double($F{facture_montantTotal})]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="montantSomme" toVariable="montantFactureRetour"/>
+				<returnValue subreportVariable="montantSolde" toVariable="montantSoldeRetour"/>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "RoleSuiviFacturationAdresseTaxee_r2tToulon.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement key="line-9" stretchType="RelativeToBandHeight" x="62" y="0" width="1" height="47" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-8" stretchType="RelativeToBandHeight" x="133" y="0" width="1" height="47" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-10" stretchType="RelativeToBandHeight" x="324" y="0" width="1" height="47" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-11" stretchType="RelativeToBandHeight" x="533" y="0" width="1" height="47" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-12" stretchType="RelativeToBandHeight" x="594" y="0" width="1" height="47" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-13" stretchType="RelativeToBandHeight" x="651" y="0" width="1" height="47" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-14" stretchType="RelativeToBandHeight" x="708" y="0" width="1" height="47" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-19" x="652" y="3" width="56" height="18"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facture_etat}.equals("ANNULEE")?"X":""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,## €0.00" isBlankWhenNull="false">
+				<reportElement key="textField-30" x="596" y="3" width="55" height="15" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($F{facture_solde}==null?false:true)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($F{facture_solde})]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" positionType="Float" stretchType="RelativeToTallestObject" x="711" y="3" width="59" height="28"/>
+				<subreportParameter name="laFacture">
+					<subreportParameterExpression><![CDATA[$F{facture_numeroFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele}+ "RoleSuiviFacturationReclamation_r2tToulon.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="60">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" positionType="Float" x="320" y="33" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-13" positionType="Float" x="394" y="33" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement key="rectangle-3" mode="Opaque" x="4" y="6" width="646" height="17" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
+			</rectangle>
+			<textField pattern="#,## €0.00" isBlankWhenNull="false">
+				<reportElement key="textField-20" x="531" y="8" width="58" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantTotalTypeFactureParTypeTaxe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-14" x="349" y="8" width="126" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Montant à reporter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="60" y="8" width="158" height="14">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Nombre de factures de la page :]]></text>
+			</staticText>
+			<textField evaluationTime="Band" isBlankWhenNull="false">
+				<reportElement key="textField-21" x="229" y="8" width="69" height="14">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-28" x="512" y="33" width="264" height="14"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Utilisateur demandeur " + $P{UtilisateurDemandeur}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Page" pattern="#,## €0.00" isBlankWhenNull="false">
+				<reportElement key="textField-32" x="591" y="8" width="55" height="14">
+					<printWhenExpression><![CDATA[new Boolean($V{MontantTotalSoldeFactureParPage}.doubleValue()==0?false:true)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SoldeReporIncPage}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="60">
+			<rectangle>
+				<reportElement key="rectangle-4" mode="Opaque" x="4" y="1" width="619" height="17" forecolor="#FFFFFF" backcolor="#CCCCCC">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField pattern="#,## €0.00" isBlankWhenNull="false">
+				<reportElement key="textField-22" x="507" y="3" width="82" height="14">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantTotalTypeFactureParTypeTaxe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-16" x="352" y="3" width="123" height="14">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Montant à reporter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="62" y="3" width="156" height="14">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Nombre de factures de la page]]></text>
+			</staticText>
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="textField-23" x="228" y="3" width="69" height="14">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement key="rectangle-5" mode="Transparent" x="4" y="22" width="646" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-18" x="36" y="23" width="182" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Nombre total de factures de la taxe]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-24" x="228" y="23" width="70" height="14"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,## €0.00" isBlankWhenNull="false">
+				<reportElement key="textField-25" x="531" y="23" width="58" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantTotalTypeFactureParTypeTaxe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-19" x="404" y="23" width="71" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Montant Total]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-26" positionType="Float" x="320" y="42" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-27" positionType="Float" x="394" y="42" width="74" height="16"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-29" x="512" y="42" width="264" height="14"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Utilisateur demandeur " + $P{UtilisateurDemandeur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,## €0.00" isBlankWhenNull="false">
+				<reportElement key="textField-33" x="591" y="23" width="55" height="14">
+					<printWhenExpression><![CDATA[new Boolean($V{MontantTotalSoldeFactureParPage}.doubleValue()==0?false:true)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantTotalSoldeFactureParPage}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-20" x="6" y="44" width="172" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 20-05-2009 v3.43]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

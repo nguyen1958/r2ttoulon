@@ -1,0 +1,26 @@
+Spécification ToulonMarcheMarcheSuiviPresenceRedevable
+------------------------------------------------------
+
+On rend compte du bilan des absences sur les marchés
+On a dans ce rapport que les redevables ayant des absences
+
+On a la possibilité qu'un redevable ai plusieurs emplacements sur un marché. 
+Pour cette raison j'ai ajouté l'emplacement dans le suivi des absences
+
+Modif 01/09/2012
+---------------
+Correction du paramètre subreport Expression de passage du chemin par_cheminModele par : $P{par_CheminModele} + "ToulonMarcheMarcheSuiviPresenceRedevable_Secteur.jasper"
+
+Modif 05/09/2012
+---------------
+Changement de la définitions des paramètres de bilan pour un secteur : la date de contrôle permettant le calcul
+du nombre de contrôle n'est plus la date du dernier contrôle mais la date du contrôle : batchrapportcomptable.periode
+
+Modif 06/09/2012
+---------------
+Les dates butée sont la date de periode
+
+Modif 16/09/2012
+-----------------
+Suppression du message : un redevable peut avoir plusieurs emplacements 
+Un redevable ne peut pas avoir plusieurs emplacement cela est impossible

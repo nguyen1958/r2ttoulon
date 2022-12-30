@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeDesAcomptesTrimestrielToulon_SR_details" pageWidth="800" pageHeight="802" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="annee" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2011"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFinTrimestre" class="java.lang.String">
+		<defaultValueExpression><![CDATA["30/06/2011"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebutTrimestre" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/04/2011"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT distinct TableReponse.nbLignePaiement, TableReponse.numFacture,
+eg.`codeSecteur` AS emplacementgeneral_codeSecteur,
+TableReponse.`typeTaxeReponse` AS facture_typeTaxe,
+i.`designation` AS imputation_designation  
+FROM
+	(SELECT COUNT(lp.`idFacture`) as nbLignePaiement, f.numeroFacture as numFacture, f.`typeTaxe` as typeTaxeReponse 
+	FROM payement p,lignepayement lp, facture f,`typepayement` tp  
+	WHERE f.`anneeEx` = $P{annee}
+
+	AND f.`envoyerALaTresorie` = "false"
+	AND f.`etat` = "Valide"
+	AND f.`typeTaxe` NOT LIKE "TLPE"
+	AND f.`typeTaxe` NOT LIKE "ETALAGE"
+	AND f.`typeTaxe` NOT LIKE "pub"
+	AND f.`typeTaxe` NOT LIKE "TICKET_MARCHE"
+	AND lp.`idFacture` = f.`idFacture`
+	AND p.`idPayement` = lp.`idPayement`
+	AND p.`etat` LIKE "valide"
+	AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFinTrimestre},'%d/%m/%Y')
+	AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebutTrimestre},'%d/%m/%Y')
+	AND p.`idTypePayement` = tp.`idTypePayement`
+	AND tp.`typepayement` !="Remise"
+	GROUP BY lp.`idFacture`) TableReponse, 
+article a, lignefacture lf, elementfacturation ef, emplacementgeneral eg, imputation i
+
+WHERE 	TableReponse.nbLignePaiement > 1
+	AND lf.`idFacture` = TableReponse.`numFacture`
+	AND a.`id_article` = lf.`idArticle`
+	AND ef.`numero` = a.`id_elementfacturation`
+	AND eg.`numero` = ef.`numeroEmplacement`
+	AND i.`libelle` = TableReponse.typeTaxeReponse 
+
+ORDER BY imputation_designation ASC,
+emplacementgeneral_codeSecteur ASC]]>
+	</queryString>
+	<field name="nbLignePaiement" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numFacture" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emplacementgeneral_codeSecteur" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_typeTaxe" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="GrandeTaxe" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{facture_typeTaxe}]]></groupExpression>
+		<groupHeader>
+			<band height="17" splitType="Prevent">
+				<textField>
+					<reportElement positionType="Float" x="0" y="1" width="500" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Ventilation par emplacement - " + $F{imputation_designation}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="500" y="1" width="160" height="15">
+						<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<text><![CDATA[Version 22/03/2012 IR3.5.2]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="secteur" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{emplacementgeneral_codeSecteur}]]></groupExpression>
+		<groupHeader>
+			<band height="17" splitType="Prevent">
+				<textField>
+					<reportElement x="0" y="1" width="500" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["- Secteur " +$F{emplacementgeneral_codeSecteur}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Prevent">
+			<subreport>
+				<reportElement x="0" y="1" width="800" height="15"/>
+				<subreportParameter name="par_CheminModele">
+					<subreportParameterExpression><![CDATA[$P{par_CheminModele}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numeroFacture">
+					<subreportParameterExpression><![CDATA[$F{numFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "ListeDesAcomptesTrimestrielToulon_SR_details_redevable.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

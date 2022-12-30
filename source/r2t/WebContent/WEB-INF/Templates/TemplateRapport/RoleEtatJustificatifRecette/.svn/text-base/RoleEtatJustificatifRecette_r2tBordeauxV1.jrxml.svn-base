@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoleEtatJustificatifRecette_r2tBordeauxV1" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NumeroBatch" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1843)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AnneeExercice" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2009"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     facture.`typeTaxe` AS facture_typeTaxe,
+     facture.`anneeEx` AS facture_anneeEx,
+     imputation.`code` AS imputation_code,
+     imputation.`libelle` AS imputation_libelle,
+     batchtraitement.`dateExecution`,
+     imputation.`section` AS imputation_section,
+     imputation.`designation` AS imputation_designation,
+     imputation.`codeFonction` AS imputation_codeFonction,
+     imputation.`codeCentreResponsable` AS imputation_codeCentreResponsable,
+     (SELECT  parametresmairie.`ville` FROM parametresmairie) AS villemairie
+FROM
+     `facture` facture,
+     `imputation` imputation,
+     `batchtraitement` batchtraitement
+WHERE
+     imputation.libelle = facture.typeTaxe
+ AND batchtraitement.numeroBatchTraitement = facture.idBatchTraitement
+ AND facture.idBatchTraitement = $P{NumeroBatch}
+AND imputation.anneeExercice = facture.anneeEx
+ AND facture.etat NOT LIKE "preRefacturation"
+
+GROUP BY
+     imputation.nomElu,
+     facture.typeTaxe,
+     facture.anneeEx]]>
+	</queryString>
+	<field name="facture_typeTaxe" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="facture_anneeEx" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_libelle" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dateExecution" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_section" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_codeFonction" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_codeCentreResponsable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="villemairie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DateDuJour" class="java.util.Date">
+		<variableExpression><![CDATA[new Date()]]></variableExpression>
+		<initialValueExpression><![CDATA[new Date()]]></initialValueExpression>
+	</variable>
+	<variable name="Var_MontantTotalParEluTypeTaxeExercice" class="java.lang.Double" resetType="Page">
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="var_LeNombreFacture" class="java.lang.Integer">
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="DateExecutionBatch" class="java.util.Date" resetType="None">
+		<variableExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT).parse($F{dateExecution})]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="191">
+			<staticText>
+				<reportElement key="staticText-20" x="0" y="53" width="133" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Affaire suivie par]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-18" x="0" y="133" width="535" height="29"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ETAT DES SOMMES DUES AU TITRE DE "+$F{imputation_designation}.toUpperCase() + " DE L'EXERCICE " + $F{facture_anneeEx}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" x="1" y="70" width="225" height="50"/>
+				<subreportParameter name="LeTypeDeTaxe">
+					<subreportParameterExpression><![CDATA[$F{facture_typeTaxe}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="AnneeExercice">
+					<subreportParameterExpression><![CDATA[$F{facture_anneeEx}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "Gestionnaire_r2tBordeauxV1.jasper"]]></subreportExpression>
+			</subreport>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-22" x="1" y="173" width="524" height="18"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Etat représentant le montant des taxes dues pour les titres émis le "+
+DateFormat.getDateInstance(DateFormat.LONG).format($V{DateExecutionBatch})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="5" width="195" height="25"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Mairie de " + $F{villemairie} +
+"\nDirection de la vie locale"]]></textFieldExpression>
+			</textField>
+			<textField pattern="d MMMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-12" x="354" y="5" width="170" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{villemairie} + ", le " +
+DateFormat.getDateInstance(DateFormat.LONG).format(new Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="258">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToTallestObject" x="0" y="60" width="534" height="20"/>
+				<subreportParameter name="LeNombreDePage">
+					<subreportParameterExpression><![CDATA[$V{var_LeNombreFacture}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NumeroBatch">
+					<subreportParameterExpression><![CDATA[$P{NumeroBatch}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LeTypeDeTaxe">
+					<subreportParameterExpression><![CDATA[$F{facture_typeTaxe}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="AnneeExercice">
+					<subreportParameterExpression><![CDATA[$F{facture_anneeEx}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="MontantTotalParEluTypeTaxeExercice" toVariable="Var_MontantTotalParEluTypeTaxeExercice"/>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele}+ "RoleEtatJustificatifRecetteDetail_r2tBordeaux.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement key="staticText-26" x="41" y="28" width="201" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 20-05-2009 v3.45]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band height="193">
+			<textField isStretchWithOverflow="true" evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement key="textField-4" positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="1" y="0" width="534" height="102" isRemoveLineWhenBlank="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Vu et Arrêté par nous, Maire de la Ville de  " + $F{villemairie} + ", à la somme de :\n"+
+ fr.analogon.r2t.util.jasper.ConvertNombreLettre.convertRealToString($V{Var_MontantTotalParEluTypeTaxeExercice})+
+", par Monsieur le Receveur Principal de  " + $F{villemairie} + " Municipale."+
+"\n\nCes sommes seront imputées sur la fonction " + $F{imputation_codeFonction}+
+", compte " +$F{imputation_codeCentreResponsable} +
+", enveloppe "+$F{imputation_section}+
+", de l'exercice "+ $F{facture_anneeEx}+
+" pour " + $F{imputation_designation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-21" positionType="FixRelativeToBottom" x="1" y="107" width="194" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Fait à " + $F{villemairie}  + " le " +
+DateFormat.getDateInstance(DateFormat.LONG).format($V{DateExecutionBatch})]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-3" positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="227" y="124" width="301" height="66"/>
+				<subreportParameter name="LeTypeDeTaxe">
+					<subreportParameterExpression><![CDATA[$F{facture_typeTaxe}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="AnneeExercice">
+					<subreportParameterExpression><![CDATA[$F{facture_anneeEx}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "Elu_r2tBordeauxV1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

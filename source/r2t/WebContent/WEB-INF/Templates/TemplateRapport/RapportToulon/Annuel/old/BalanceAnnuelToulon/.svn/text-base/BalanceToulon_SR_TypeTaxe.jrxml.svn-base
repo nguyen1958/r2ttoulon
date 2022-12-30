@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="802" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFin" class="java.lang.String">
+		<defaultValueExpression><![CDATA["31/12/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebut" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/07/2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anneeExercice" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2012"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT i.`libelle` AS imputation_libelle
+
+FROM imputation i
+
+WHERE 
+
+i.`libelle` NOT IN ('pub','TICKET_MARCHE')
+AND i.`anneeExercice` = $P{anneeExercice}
+
+ORDER BY i.`designation`]]>
+	</queryString>
+	<field name="imputation_libelle" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="270" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Constatation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Perception]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Poursuite]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Annul.Remise]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="710" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Excédent]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="1" width="802" height="15"/>
+				<subreportParameter name="dateFin">
+					<subreportParameterExpression><![CDATA[$P{dateFin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anneeExercice">
+					<subreportParameterExpression><![CDATA[$P{anneeExercice}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="typeTaxe">
+					<subreportParameterExpression><![CDATA[$F{imputation_libelle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dateDebut">
+					<subreportParameterExpression><![CDATA[$P{dateDebut}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{par_CheminModele} + "BalanceToulon_SR_DetailMontant.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="96" y="1" width="136" height="15">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[version 18/08/2012 IR 3.5.2]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

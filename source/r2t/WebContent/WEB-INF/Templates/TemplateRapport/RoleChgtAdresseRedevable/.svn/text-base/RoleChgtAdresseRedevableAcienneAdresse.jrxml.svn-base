@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoleChgtAdresseRedevableAcienneAdresse" pageWidth="255" pageHeight="802" columnWidth="255" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="NumRedevable" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(7386)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="par_CheminModele" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[".\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     historiqueadresseredevable.`numRue` AS historiqueadresseredevable_numRue,
+     historiqueadresseredevable.`adresse1` AS historiqueadresseredevable_adresse1,
+     historiqueadresseredevable.`adresse2` AS historiqueadresseredevable_adresse2,
+     historiqueadresseredevable.`adresse3` AS historiqueadresseredevable_adresse3,
+     historiqueadresseredevable.`ville` AS historiqueadresseredevable_ville,
+     historiqueadresseredevable.`codePostal` AS historiqueadresseredevable_codePostal,
+     historiqueadresseredevable.`rdCedex` AS historiqueadresseredevable_rdCedex,
+     historiqueadresseredevable.`complementNumeroRueRedevable` AS historiqueadresseredevable_complementNumeroRueRedevable
+FROM
+     `redevable` redevable,
+     `historiqueadresseredevable` historiqueadresseredevable
+WHERE
+     historiqueadresseredevable.idRedevable = $P{NumRedevable}
+ORDER BY
+     historiqueadresseredevable.idHistoriqueAdresse DESC
+limit 1]]>
+	</queryString>
+	<field name="historiqueadresseredevable_numRue" class="java.lang.Integer"/>
+	<field name="historiqueadresseredevable_adresse1" class="java.lang.String"/>
+	<field name="historiqueadresseredevable_adresse2" class="java.lang.String"/>
+	<field name="historiqueadresseredevable_adresse3" class="java.lang.String"/>
+	<field name="historiqueadresseredevable_ville" class="java.lang.String"/>
+	<field name="historiqueadresseredevable_codePostal" class="java.lang.String"/>
+	<field name="historiqueadresseredevable_rdCedex" class="java.lang.String"/>
+	<field name="historiqueadresseredevable_complementNumeroRueRedevable" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="17">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-1" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="141" height="15"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["\n" +
+($F{historiqueadresseredevable_numRue}.equals("")||$F{historiqueadresseredevable_numRue}.equals("0")?"":$F{historiqueadresseredevable_numRue} + " ") + 
+($F{historiqueadresseredevable_complementNumeroRueRedevable}.equals("")?"":$F{historiqueadresseredevable_complementNumeroRueRedevable}+" ") +
+$F{historiqueadresseredevable_adresse1} +
+($F{historiqueadresseredevable_adresse2}.equals("")?"":"\n"+$F{historiqueadresseredevable_adresse2})+
+($F{historiqueadresseredevable_adresse3}.equals("")?"":"\n"+$F{historiqueadresseredevable_adresse3})+
+("\n"+$F{historiqueadresseredevable_codePostal}+( " "+$F{historiqueadresseredevable_ville}+
+(($F{historiqueadresseredevable_rdCedex}.equals("true")?" Cédex":""))))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-23" x="127" y="2" width="128" height="13">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 20-05-2009 v3.43]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

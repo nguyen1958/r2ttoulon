@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>r2t</display-name>
+	<welcome-file-list>
+	<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+
+  <servlet>
+    <servlet-name>authentification</servlet-name>
+    <servlet-class>fr.analogon.r2t.main.Authentification</servlet-class>
+  </servlet>
+  
+    <servlet>
+    <servlet-name>gestionFacture</servlet-name>
+    <servlet-class>fr.analogon.r2t.batch.facture.GestionFactures</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>gestionFileUpload</servlet-name>
+    <servlet-class>fr.analogon.r2t.fileupload.GestionFileUpload</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>getInfosFacture</servlet-name>
+    <servlet-class>fr.analogon.r2t.reclamation.GetInfosFacture</servlet-class>
+  </servlet>
+  
+
+  <servlet>
+    <servlet-name>entree</servlet-name>
+    <servlet-class>fr.analogon.r2t.main.Entree</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>gestionacompte</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.regie.GestionAcompte</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>gestionactiviteprofession</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.parametres.GestionActiviteProfession</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionbanque</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.parametres.GestionBanque</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionbareme</servlet-name>
+    <servlet-class>fr.analogon.r2t.parametres.bareme.GestionBareme</servlet-class>
+  </servlet>
+  
+   <servlet>
+    <servlet-name>gestionReclamation</servlet-name>
+    <servlet-class>fr.analogon.r2t.reclamation.GestionReclamation</servlet-class>
+  </servlet>
+  
+    
+   <servlet>
+    <servlet-name>basculerLesTav</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.BasculerLesTav</servlet-class>
+  </servlet>
+
+  
+  <servlet>
+    <servlet-name>gestionbatchtraitement</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.SRoleGestionBatchTraitement</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionelementfacturation</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.regie.GestionElementFacturation</servlet-class>
+  </servlet>
+  
+    <servlet>
+    <servlet-name>gestionalertes</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.alertes.Gestionalertes</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>gestionemplafficheur</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplAfficheur</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplambulant</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplAmbulant</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplautobus</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplAutobus</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplconvention</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplConvention</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionempletalage</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplEtalage</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplhalles</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplHalles</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplkiosque</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplKiosque</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplmarche</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplMarche</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplodp</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplODP</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionempltaxi</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplTaxi</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionemplvoirie</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionEmplVoirie</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionimputation</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.parametres.GestionImputation</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionlignepaiement</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.ticket.GestionLignePaiement</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionpaiementticket</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.ticket.GestionPaiementTicket</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionpaiementvignette</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.regie.GestionPaiementVignette</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionredevable</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionRedevable</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionremiseexcedent</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.regie.GestionRemiseExcedent</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestionrole</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionRole</servlet-class>
+  </servlet>
+  
+  
+   <servlet>
+    <servlet-name>gestiontextereglementaire</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.parametres.GestionTexteReglementaire</servlet-class>
+  </servlet>
+   <servlet>
+    <servlet-name>gestionRue</servlet-name>
+    <servlet-class>fr.analogon.r2t.rue.GestionRue</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestiontimbrevignette</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.ticket.GestionTimbreVignette</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>gestiontransfert</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.GestionTransfert</servlet-class>
+  </servlet>
+
+
+
+  <servlet>
+    <servlet-name>preparationtransfert</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.PreparationTransfert</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>preparergestionemplacement</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.PreparerGestionEmplacement</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>regiegestiondiverses</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.regie.GestionDiverses</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>sgestioncaisse</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.regie.SGestionCaisse</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>sdivers</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.SDivers</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>sexport</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.SExport</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>sjourneaux</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.SJourneaux</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>listeAlertes</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.alertes.ListeAlertes</servlet-class>
+  </servlet>
+  
+  
+  
+  <servlet>
+    <servlet-name>ticketaffectation</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.ticket.TicketAffectation</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ticketsecteur</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.ticket.TicketSecteur</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>verificationcreationemplrapide</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.role.VerificationCreationEmplRapide</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>authentification</servlet-name>
+    <url-pattern>/authentification</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>getInfosFacture</servlet-name>
+    <url-pattern>/getInfosFacture</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet-mapping>
+    <servlet-name>entree</servlet-name>
+    <url-pattern>/entree</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>gestionacompte</servlet-name>
+    <url-pattern>/gestionacompte</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionactiviteprofession</servlet-name>
+    <url-pattern>/gestionactiviteprofession</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>gestionbanque</servlet-name>
+    <url-pattern>/gestionbanque</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionbareme</servlet-name>
+    <url-pattern>/gestionbareme</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>gestionReclamation</servlet-name>
+    <url-pattern>/gestionReclamation</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet-mapping>
+    <servlet-name>gestionbatchtraitement</servlet-name>
+    <url-pattern>/gestionbatchtraitement</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionelementfacturation</servlet-name>
+    <url-pattern>/gestionelementfacturation</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>gestionalertes</servlet-name>
+    <url-pattern>/gestionalertes</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>gestionFacture</servlet-name>
+    <url-pattern>/gestionFacture</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+    <servlet-mapping>
+    <servlet-name>gestionFileUpload</servlet-name>
+    <url-pattern>/gestionFileUpload</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet-mapping>
+    <servlet-name>gestionemplafficheur</servlet-name>
+    <url-pattern>/gestionemplafficheur</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplambulant</servlet-name>
+    <url-pattern>/gestionemplambulant</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplautobus</servlet-name>
+    <url-pattern>/gestionemplautobus</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplconvention</servlet-name>
+    <url-pattern>/gestionemplconvention</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+    <servlet-mapping>
+    <servlet-name>gestionempletalage</servlet-name>
+    <url-pattern>/gestionempletalage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplhalles</servlet-name>
+    <url-pattern>/gestionemplhalles</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplkiosque</servlet-name>
+    <url-pattern>/gestionemplkiosque</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplmarche</servlet-name>
+    <url-pattern>/gestionemplmarche</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplodp</servlet-name>
+    <url-pattern>/gestionemplodp</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionempltaxi</servlet-name>
+    <url-pattern>/gestionempltaxi</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionemplvoirie</servlet-name>
+    <url-pattern>/gestionemplvoirie</url-pattern>
+  </servlet-mapping>
+
+    <servlet-mapping>
+    <servlet-name>gestionimputation</servlet-name>
+    <url-pattern>/gestionimputation</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet-mapping>
+    <servlet-name>gestionlignepaiement</servlet-name>
+    <url-pattern>/gestionlignepaiement</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>sgestioncaisse</servlet-name>
+    <url-pattern>/sgestioncaisse</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>gestionpaiementticket</servlet-name>
+    <url-pattern>/gestionpaiementticket</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionpaiementvignette</servlet-name>
+    <url-pattern>/gestionpaiementvignette</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>gestionredevable</servlet-name>
+    <url-pattern>/gestionredevable</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+    <servlet-mapping>
+    <servlet-name>basculerLesTav</servlet-name>
+    <url-pattern>/basculerLesTav</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet-mapping>
+    <servlet-name>gestiontextereglementaire</servlet-name>
+    <url-pattern>/gestiontextereglementaire</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionremiseexcedent</servlet-name>
+    <url-pattern>/gestionremiseexcedent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionrole</servlet-name>
+    <url-pattern>/gestionrole</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestionRue</servlet-name>
+    <url-pattern>/gestionRue</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestiontimbrevignette</servlet-name>
+    <url-pattern>/gestiontimbrevignette</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>gestiontransfert</servlet-name>
+    <url-pattern>/gestiontransfert</url-pattern>
+  </servlet-mapping>
+ 
+
+     <servlet-mapping>
+    <servlet-name>preparationtransfert</servlet-name>
+    <url-pattern>/preparationtransfert</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>preparergestionemplacement</servlet-name>
+    <url-pattern>/preparergestionemplacement</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>regiegestiondiverses</servlet-name>
+    <url-pattern>/regiegestiondiverses</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>sdivers</servlet-name>
+    <url-pattern>/sdivers</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>sexport</servlet-name>
+    <url-pattern>/sexport</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>sjourneaux</servlet-name>
+    <url-pattern>/sjourneaux</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet-mapping>
+    <servlet-name>listeAlertes</servlet-name>
+    <url-pattern>/listeAlertes</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet-mapping>
+    <servlet-name>ticketaffectation</servlet-name>
+    <url-pattern>/ticketaffectation</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ticketsecteur</servlet-name>
+    <url-pattern>/ticketsecteur</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>verificationcreationemplrapide</servlet-name>
+    <url-pattern>/verificationcreationemplrapide</url-pattern>
+  </servlet-mapping>
+
+
+    <mime-mapping>
+        <extension>xls</extension>
+        <mime-type>application/msexcel</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>doc</extension>
+        <mime-type>application/msword</mime-type>
+    </mime-mapping>
+ 
+
+    <mime-mapping>
+      <extension>pub</extension>
+      <mime-type>application/x-mspublisher</mime-type>
+    </mime-mapping>
+    
+       
+  
+  
+  <servlet>
+    <servlet-name>rechercheRue</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheRue</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheRue</servlet-name>
+    <url-pattern>/rechercheRue</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>rechercheQuartier</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheQuartier</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheQuartier</servlet-name>
+    <url-pattern>/rechercheQuartier</url-pattern>
+  </servlet-mapping>
+    
+    <servlet>
+    <servlet-name>rechercheEmplacement</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheEmplacement</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheEmplacement</servlet-name>
+    <url-pattern>/rechercheEmplacement</url-pattern>
+  </servlet-mapping>
+    
+  <servlet>
+    <servlet-name>rechercheRedevable</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheRedevable</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheRedevable</servlet-name>
+    <url-pattern>/rechercheRedevable</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>rechercheCodeVille</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheCodeVille</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheCodeVille</servlet-name>
+    <url-pattern>/rechercheCodeVille</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+    <servlet-name>verifierUnciteCodeNumEmplacement</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.VerifierUnciteCodeNumEmplacement</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>verifierUnciteCodeNumEmplacement</servlet-name>
+    <url-pattern>/verifierUnciteCodeNumEmplacement</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>verifierUnciteSiretSiren</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.VerifierUnciteSiretSiren</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>verifierUnciteSiretSiren</servlet-name>
+    <url-pattern>/verifierUnciteSiretSiren</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet>
+    <servlet-name>rechercheUtilisateur</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheUtilisateur</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheUtilisateur</servlet-name>
+    <url-pattern>/rechercheUtilisateur</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>rechercheAction</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheAction</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheAction</servlet-name>
+    <url-pattern>/rechercheAction</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>recupererCourierReponse</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RecupererCourierReponse</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>recupererCourierReponse</servlet-name>
+    <url-pattern>/recupererCourierReponse</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
+    <servlet>
+    <servlet-name>gestionTransfertEmplacement</servlet-name>
+    <servlet-class>fr.analogon.r2t.changementTransfert.GestionTransfertEmplacement</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>gestionTransfertEmplacement</servlet-name>
+    <url-pattern>/gestionTransfertEmplacement</url-pattern>
+  </servlet-mapping> 
+  
+  
+   <servlet>
+    <servlet-name>gestionChangementAdresseRedevable</servlet-name>
+    <servlet-class>fr.analogon.r2t.changementTransfert.GestionChangementAdresseRedevable</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>gestionChangementAdresseRedevable</servlet-name>
+    <url-pattern>/gestionChangementAdresseRedevable</url-pattern>
+  </servlet-mapping> 
+  
+  
+   <servlet>
+    <servlet-name>gestionImputation</servlet-name>
+    <servlet-class>fr.analogon.r2t.parametres.imputation.GestionImputation</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>gestionImputation</servlet-name>
+    <url-pattern>/gestionImputation</url-pattern>
+  </servlet-mapping> 
+  
+     <servlet>
+    <servlet-name>basculerImputationBareme</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.BasculerImputationBareme</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>basculerImputationBareme</servlet-name>
+    <url-pattern>/basculerImputationBareme</url-pattern>
+  </servlet-mapping> 
+  
+  
+  <servlet>
+    <servlet-name>rechercheBareme</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RechercheBareme</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>rechercheBareme</servlet-name>
+    <url-pattern>/rechercheBareme</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>gestionRefacturation</servlet-name>
+    <servlet-class>fr.analogon.r2t.batch.facture.GestionRefacturation</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>gestionRefacturation</servlet-name>
+    <url-pattern>/gestionRefacturation</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>getPrefacture</servlet-name>
+    <servlet-class>fr.analogon.r2t.batch.facture.GetPrefacture</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>getPrefacture</servlet-name>
+    <url-pattern>/getPrefacture</url-pattern>
+  </servlet-mapping>
+
+   <servlet>
+    <servlet-name>importImageEmplacment</servlet-name>
+    <servlet-class>fr.analogon.r2t.fileupload.ImportImageEmplacment</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>importImageEmplacment</servlet-name>
+    <url-pattern>/importImageEmplacment</url-pattern>
+  </servlet-mapping> 
+  
+   <servlet>
+    <servlet-name>importDocumentEmplacment</servlet-name>
+    <servlet-class>fr.analogon.r2t.fileupload.ImportDocumentEmplacment</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>importDocumentEmplacment</servlet-name>
+    <url-pattern>/importDocumentEmplacment</url-pattern>
+  </servlet-mapping>  
+   
+  
+     <servlet>
+    <servlet-name>gestionUtilisateur</servlet-name>
+    <servlet-class>fr.analogon.r2t.administration.GestionUtilisateur</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionUtilisateur</servlet-name>
+    <url-pattern>/gestionUtilisateur</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet>
+    <servlet-name>verfierIntegrite</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.VerfierIntegrite</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>verfierIntegrite</servlet-name>
+    <url-pattern>/verfierIntegrite</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+    <servlet-name>verfierDates</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.VerfierDates</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>verfierDates</servlet-name>
+    <url-pattern>/verfierDates</url-pattern>
+  </servlet-mapping> 
+  
+  
+  <servlet>
+    <servlet-name>testajax</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.Testajax</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>testajax</servlet-name>
+    <url-pattern>/testajax</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>reediterFacture</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.ReediterFacture</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>reediterFacture</servlet-name>
+    <url-pattern>/reediterFacture</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>relancerFacture</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.RelancerFacture</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>relancerFacture</servlet-name>
+    <url-pattern>/relancerFacture</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>exportExcel</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.ExportExcel</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>exportExcel</servlet-name>
+    <url-pattern>/exportExcel</url-pattern>
+  </servlet-mapping>
+   
+  
+    <servlet>
+    <servlet-name>gestionParametreAdministration</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.GestionParametreAdministration</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionParametreAdministration</servlet-name>
+    <url-pattern>/gestionParametreAdministration</url-pattern>
+  </servlet-mapping> 
+  
+  
+ <servlet>
+    <servlet-name>chargerRaisonSocialRedevable</servlet-name>
+    <servlet-class>fr.analogon.r2t.ajax.ChargerRaisonSocialRedevable</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>chargerRaisonSocialRedevable</servlet-name>
+    <url-pattern>/chargerRaisonSocialRedevable</url-pattern>
+  </servlet-mapping>
+ 
+  
+  
+    <servlet>
+    <servlet-name>gestionModeleCourier</servlet-name>
+    <servlet-class>fr.analogon.r2t.reclamation.GestionModeleCourier</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionModeleCourier</servlet-name>
+    <url-pattern>/gestionModeleCourier</url-pattern>
+  </servlet-mapping> 
+  
+  
+  
+   <servlet>
+    <servlet-name>getRoleComnunique</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GetRoleComnunique</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>getRoleComnunique</servlet-name>
+    <url-pattern>/getRoleComnunique</url-pattern>
+  </servlet-mapping> 
+  
+ <servlet>
+    <servlet-name>gestionPayement</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.regie.GestionPayement</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionPayement</servlet-name>
+    <url-pattern>/gestionPayement</url-pattern>
+  </servlet-mapping> 
+  
+  
+   <servlet>
+    <servlet-name>gestionRapportComptableJournalier</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GestionRapportComptableJournalier</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>gestionRapportComptableMarche</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GestionRapportComptableMarche</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionRapportComptableJournalier</servlet-name>
+    <url-pattern>/gestionRapportComptableJournalier</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet-mapping>
+    <servlet-name>gestionRapportComptableMarche</servlet-name>
+    <url-pattern>/gestionRapportComptableMarche</url-pattern>
+  </servlet-mapping> 
+  
+  
+     <servlet>
+    <servlet-name>gestionRapportComptableMensuel</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GestionRapportComptableMensuel</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionRapportComptableMensuel</servlet-name>
+    <url-pattern>/gestionRapportComptableMensuel</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet>
+    <servlet-name>gestionRapportComptableTrimestriel</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GestionRapportComptableTrimestriel</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionRapportComptableTrimestriel</servlet-name>
+    <url-pattern>/gestionRapportComptableTrimestriel</url-pattern>
+  </servlet-mapping> 
+    
+    
+   <servlet>
+    <servlet-name>gestionRapportComptableAnnuel</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GestionRapportComptableAnnuel</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionRapportComptableAnnuel</servlet-name>
+    <url-pattern>/gestionRapportComptableAnnuel</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet>
+    <servlet-name>gestionRapportEmplacementLibre</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GestionRapportEmplacementLibre</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionRapportEmplacementLibre</servlet-name>
+    <url-pattern>/gestionRapportEmplacementLibre</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>gestionRapportHistoriqueControle</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.GestionRapportHistoriqueControle</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionRapportHistoriqueControle</servlet-name>
+    <url-pattern>/gestionRapportHistoriqueControle</url-pattern>
+  </servlet-mapping>  
+  
+   <servlet>
+    <servlet-name>gestionFamilleMarche</servlet-name>
+    <servlet-class>fr.analogon.r2t.marche.GestionFamilleMarche</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionFamilleMarche</servlet-name>
+    <url-pattern>/gestionFamilleMarche</url-pattern>
+  </servlet-mapping>
+    
+     <servlet>
+    <servlet-name>gestionMarche</servlet-name>
+    <servlet-class>fr.analogon.r2t.marche.GestionMarche</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionMarche</servlet-name>
+    <url-pattern>/gestionMarche</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>gestionVille</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.ville.GestionVille</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionVille</servlet-name>
+    <url-pattern>/gestionVille</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>basculerTLPE</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.BasculerTLPE</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>basculerTLPE</servlet-name>
+    <url-pattern>/basculerTLPE</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+    <servlet>
+    <servlet-name>basculerUneTaxe</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.batch.BasculerUneTaxe</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>basculerUneTaxe</servlet-name>
+    <url-pattern>/basculerUneTaxe</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>gestionAutorisation</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.autorisation.GestionAutorisation</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>gestionAutorisation</servlet-name>
+    <url-pattern>/gestionAutorisation</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>editerDocument</servlet-name>
+    <servlet-class>fr.analogon.r2t.view.autorisation.EditerDocument</servlet-class>
+  </servlet>    
+  <servlet-mapping>
+    <servlet-name>editerDocument</servlet-name>
+    <url-pattern>/editerDocument</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>gestionGroupeTaxe</servlet-name>
+    <servlet-class>fr.analogon.r2t.administration.GestionGroupeTaxe</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>gestionGroupeTaxe</servlet-name>
+    <url-pattern>/gestionGroupeTaxe</url-pattern>
+  </servlet-mapping> 
+  
+  <mime-mapping>
+    <extension>docx</extension>
+    <mime-type>application/vnd.openxmlformats-officedocument.wordprocessingml.document</mime-type>
+  </mime-mapping>
+    
+  <mime-mapping>
+      <extension>xls</extension>
+      <mime-type>application/msexcel</mime-type>
+  </mime-mapping>
+  
+  <mime-mapping>
+      <extension>doc</extension>
+      <mime-type>application/msword</mime-type>
+  </mime-mapping>
+
+
+  <mime-mapping>
+    <extension>pub</extension>
+    <mime-type>application/x-mspublisher</mime-type>
+  </mime-mapping>
+  
+  <mime-mapping>
+    <extension>rtf</extension>
+    <mime-type>application/rtf</mime-type>
+  </mime-mapping>
+  
+  <session-config>
+     <session-timeout>60</session-timeout>
+  </session-config> 
+
+</web-app>

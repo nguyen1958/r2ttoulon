@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VersementCarteBancaireToulon_Quittances_SR" pageWidth="469" pageHeight="802" columnWidth="469" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="DatedeQuittance" class="java.lang.String">
+		<defaultValueExpression><![CDATA["14/11/2018"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT distinct
+     payement.`idPayement`,
+     payement.`numeroTransaction`,
+     payement.numeroQuittance,
+     payement.`montantPayement`,
+     redevable.nomRedevable,
+     redevable.prenom
+FROM
+     `payement` payement
+     LEFT OUTER JOIN lignepayement
+     ON lignepayement.idPayement = payement.`idPayement`
+
+	 LEFT OUTER JOIN typepayement
+     ON typepayement.idTypePayement = payement.idTypePayement
+
+     LEFT OUTER JOIN facture
+     ON facture.idFacture = lignepayement.idFacture
+
+     LEFT OUTER JOIN redevable
+     ON redevable.numRedevable = facture.idClient
+WHERE payement.datePayement =  $P{DatedeQuittance}
+	  AND payement.etat LIKE "valide"
+	  AND payement.`numeroTransaction`<>0
+	  AND typepayement.`idTypePayement` = 5
+ORDER BY payement.`idPayement`]]>
+	</queryString>
+	<field name="idPayement" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numeroTransaction" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numeroQuittance" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="montantPayement" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="451" height="23"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="104" y="0" width="1" height="23"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="338" y="0" width="1" height="23"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<textField pattern="">
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="2" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroTransaction}==null?"":$F{numeroTransaction}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="107" y="2" width="230" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomRedevable}
++ " "
++ $F{prenom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement stretchType="RelativeToTallestObject" x="340" y="2" width="110" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{montantPayement}==null?new Double(0.00):$F{montantPayement}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="31" y="18" width="116" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 01/02/2010]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

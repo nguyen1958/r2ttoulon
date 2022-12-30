@@ -1,0 +1,9 @@
+modif du 04/02/2013
+-------------------
+Rapport ToulonMarcheRecapMensuelParMarche_sr1
+Ajout de la condition AND bareme.`anExercice` = br.`annee` pour distinguer le barème de l'année
+
+modif du 07/02/2013
+-------------------
+Rapport ToulonMarcheRecapMensuelParMarche_sr1
+changement du group by de code à libelle pour éviter le dédoublement des sommes

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VersementMensuelToulon_SR_Detail" pageWidth="806" pageHeight="802" columnWidth="806" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="dateFinMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["02/07/2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateDebutMois" class="java.lang.String">
+		<defaultValueExpression><![CDATA["02/07/2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="annee" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+	r.`numRedevable`,
+	r.nomJF,
+	r.`prenom`,
+	r.`nomRedevable`,
+	i.`idImputation`,
+	i.`designation`,
+	i.`section`,
+	b.`code`,
+	p.`numeroCheque`,
+	p.`numeroQuittance`,
+	p.`montantPayement`,
+	t.typepayement,
+	p.datePayement
+
+FROM
+	imputation i,
+	`lignepayement` l,
+	`facture` f,
+	typepayement t,
+	redevable r,
+	`payement` p
+
+	LEFT OUTER JOIN banque b
+	ON p.`idBanque` = b.`idBanque` 
+
+WHERE
+	f.`idFacture` = l.`idFacture`
+	AND l.idPayement = p.idPayement
+	AND STR_TO_DATE(p.datePayement,'%d/%m/%Y') 
+       	>=
+        STR_TO_DATE($P{dateDebutMois},'%d/%m/%Y')
+    	AND STR_TO_DATE(p.datePayement,'%d/%m/%Y') 
+       	<=
+        STR_TO_DATE($P{dateFinMois},'%d/%m/%Y')
+    	AND p.idTypePayement = t.idTypePayement
+	AND t.`typepayement` !="Remise"
+	AND p.etat LIKE "valide"
+	AND f.`idClient` = r.`numRedevable`
+	AND i.`libelle` = f.`typeTaxe`
+    	AND i.`anneeExercice` = f.`anneeEx`]]>
+	</queryString>
+	<field name="numRedevable" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomJF" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prenom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomRedevable" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idImputation" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="section" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numeroCheque" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numeroQuittance" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="montantPayement" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="typepayement" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datePayement" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="numeroChequeenChaine" class="java.lang.String">
+		<variableExpression><![CDATA[$F{numeroCheque}.toString()]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<line>
+				<reportElement x="344" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="437" y="0" width="1" height="15"/>
+			</line>
+			<staticText>
+				<reportElement x="137" y="1" width="90" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Prénom]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="676" y="1" width="55" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Mode]]></text>
+			</staticText>
+			<line>
+				<reportElement x="228" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="42" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="311" y="0" width="1" height="15"/>
+			</line>
+			<staticText>
+				<reportElement x="230" y="1" width="80" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Type de taxe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="1" width="90" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Nom]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="545" y="1" width="65" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="1" width="90" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Env. Budgetaire]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="1" width="30" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<line>
+				<reportElement x="135" y="0" width="1" height="15"/>
+			</line>
+			<staticText>
+				<reportElement x="613" y="1" width="60" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[N° quittance]]></text>
+			</staticText>
+			<line>
+				<reportElement x="732" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="611" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="674" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="480" y="0" width="1" height="15"/>
+			</line>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="806" height="15"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="734" y="1" width="70" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Valeur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="1" width="60" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[N° chèque]]></text>
+			</staticText>
+			<line>
+				<reportElement x="543" y="0" width="1" height="15"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="1" width="40" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Rd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="1" width="40" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Banque]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="545" y="2" width="66" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{datePayement}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="734" y="2" width="70" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{montantPayement}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="44" y="2" width="90" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomRedevable}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="230" y="2" width="80" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="137" y="2" width="90" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{prenom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="676" y="2" width="55" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{typepayement}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1" y="2" width="40" height="13">
+					<printWhenExpression><![CDATA[new Boolean(!$F{nomRedevable}.equals("") && !$F{prenom}.equals(""))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numRedevable}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="613" y="2" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroQuittance}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="482" y="2" width="60" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{numeroChequeenChaine}.equals("0")?"":$F{numeroCheque}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="346" y="2" width="90" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{section}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="313" y="2" width="30" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{idImputation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="439" y="2" width="40" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{code}==null?new String(""):$F{code}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="55" y="12" width="160" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 06/06/2012 IR3.5.2]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

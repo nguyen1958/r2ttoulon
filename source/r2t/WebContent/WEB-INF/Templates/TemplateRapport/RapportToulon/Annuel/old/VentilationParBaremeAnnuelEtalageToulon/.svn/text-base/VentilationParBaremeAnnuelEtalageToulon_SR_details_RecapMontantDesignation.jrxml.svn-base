@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VentilationParBaremeAnnuelEtalageToulon_SR_details_RecapMontantDesignation" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="dateDebutAnnee" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01/01/2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFinAnnee" class="java.lang.String">
+		<defaultValueExpression><![CDATA["31/12/2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numeroBatch" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(242)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+i.`idImputation` AS imputation_idImputation,
+i.`designation` AS imputation_designation,
+lf.`imputationBareme` AS lignefacture_imputationBareme,
+lf.`sectionBareme` AS lignefacture_sectionBareme,
+CAST(CONCAT(imputationBareme, sectionBareme) AS UNSIGNED)  AS ordreImputationSectionBareme,
+lf.`libelleBareme` AS lignefacture_libelleBareme,
+lf.`codeBareme` AS lignefacture_codeBareme,
+lf.`prixUnitaire` AS lignefacture_prixUnitaire,
+SUM(lf.`quantite`) AS lignefacture_quantiteTotale,
+SUM(lf.`montantLigne`) AS lignefacture_montantTotal,
+
+CAST(lf.`codeBareme` AS SIGNED INTEGER) AS lignefacture_codeBaremeInt,
+
+CONCAT(lf.`codeBareme`, lf.`prixUnitaire`)  AS baremePrixUnit
+
+FROM imputation i, batchrapportcomptable br, lignefacture lf, facture f
+
+WHERE br.`idBatchRapportComptable` = $P{numeroBatch}
+
+AND i.`anneeExercice` = br.annee
+AND i.`idImputation` = 7
+AND i.`idImputation` = lf.`idImputation`
+
+AND (f.`etat` LIKE "Valide" OR f.`etat` LIKE "ANNULEE")
+AND f.`numeroFacture` = lf.`idFacture`
+
+AND lf.`quantite` <> 0 
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') <= STR_TO_DATE($P{dateFinAnnee},'%d/%m/%Y')
+AND STR_TO_DATE(f.`dateCreation`,'%d/%m/%Y') >= STR_TO_DATE($P{dateDebutAnnee},'%d/%m/%Y')
+
+GROUP BY baremePrixUnit
+
+ORDER BY
+imputation_designation ASC,
+ordreImputationSectionBareme ASC,
+lignefacture_codeBaremeInt ASC]]>
+	</queryString>
+	<field name="imputation_idImputation" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imputation_designation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_imputationBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_sectionBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ordreImputationSectionBareme" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_libelleBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_codeBareme" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_prixUnitaire" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_quantiteTotale" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_montantTotal" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lignefacture_codeBaremeInt" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="baremePrixUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="MontantDesignation" class="java.lang.Double" resetType="Group" resetGroup="GrandeTaxe" calculation="Sum">
+		<variableExpression><![CDATA[$F{lignefacture_montantTotal}]]></variableExpression>
+	</variable>
+	<group name="GrandeTaxe">
+		<groupExpression><![CDATA[$F{imputation_idImputation}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="18" splitType="Prevent">
+				<textField pattern="#,## €0.00">
+					<reportElement x="255" y="2" width="120" height="15"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{MontantDesignation}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1" y="2" width="250" height="15"/>
+					<textElement markup="none">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total - " + $F{imputation_designation} + " :"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

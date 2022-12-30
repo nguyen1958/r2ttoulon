@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListeQuittancesJournalierToulon_SR_Total_Recette" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="DatedeArrete" class="java.lang.String">
+		<defaultValueExpression><![CDATA["02/07/2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numQ" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["123"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     sum(l.montantPayement)
+FROM
+     `lignepayement` l,
+     `payement` p,`typepayement` tp
+WHERE
+     	l.idPayement = p.idPayement
+	AND p.numeroQuittance = $P{numQ}
+	AND p.datePayement LIKE $P{DatedeArrete}
+	AND p.etat LIKE "valide"
+	AND p.`idTypePayement` = tp.`idTypePayement`
+	AND tp.`typepayement` !="Remise"]]>
+	</queryString>
+	<field name="sum(l.montantPayement)" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="139" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[TOTAL RECETTES :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="395" y="0" width="115" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{sum(l.montantPayement)}==null?new Double(0.00):$F{sum(l.montantPayement)}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="514" height="19"/>
+			</rectangle>
+			<line>
+				<reportElement x="392" y="0" width="1" height="17"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="112" y="21" width="160" height="20">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Version 22/03/2011 IR 3.5.2]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

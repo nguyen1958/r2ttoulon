@@ -1,0 +1,23 @@
+
+	-Ajouter lancer rapports: emplacements libres et historiques control ouvrages
+	-Modif : empl_choix_typeRaportComptable.jsp
+	-créer : 
+	-créer servlet : fr.analogon.r2t.view.batch.GestionRapportEmplacementLibre, fr.analogon.r2t.view.batch.GestionRapportHistoriqueControle
+	-Mettre à jour jasperreports-3.5.2jar par jasperreports-5.1.0jar.
+	
+	-[V4.3.3_31082018] 
+	créer 	.htm et .java pour tablette R2tInspecteur
+	Evolution filien : remplacer balise 54 par 541...845 
+	
+	-[V4.4.3_07112018]
+	Ajout paiement par type bancaire
+	modif rapports journalier dans module batch
+	
+	-[V4.4.4_07072020] Relance facture [éditer total selon différent typepayement : remise,exonération et acompte]
+	Ajout dans bd 2 entrées dans typepayement : Acompte et Exénoration
+	Modif empl_gestion_redevable.jsp
+	Modif les templates TemplateRapport/RapportToulon/Templatefactures/....
+	
+	-[V4.4.6_22062021] Bacule taxe et bareme 
+	Filien : Ajouter les balises 500..506
+			 balise 263 - générer facture relance

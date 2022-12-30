@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EtatControleToulon_SR_dos" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f36862a7-63bf-466e-8ecc-15743444f872">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<box>
+			<pen lineWidth="0.5"/>
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<parameter name="dateDebut" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{JASPER_REPORT}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{JASPER_REPORT}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[-- Date,nb ouvrage,secteurs
+select datemodification as date,
+       count(distinct idouvrage) as nbouvrage,
+       GROUP_CONCAT(distinct eg.codesecteur) as secteurs
+from historiqueetatouvrage heo
+join article a on heo.idouvrage=a.id_article
+join elementfacturation ef on a.id_elementfacturation=ef.numero
+join emplacementgeneral eg on ef.numeroemplacement=eg.numero
+WHERE heo.type='etat' AND heo.source='tablette' AND
+STR_TO_DATE(datemodification, '%d/%m/%Y') >= STR_TO_DATE($P{dateDebut}, '%d/%m/%Y') AND
+STR_TO_DATE(datemodification, '%d/%m/%Y') <= STR_TO_DATE($P{dateFin}, '%d/%m/%Y')
+group by heo.datemodification
+order by STR_TO_DATE(datemodification, '%d/%m/%Y');]]>
+	</queryString>
+	<field name="date" class="java.lang.String"/>
+	<field name="nbouvrage" class="java.lang.Long"/>
+	<field name="secteurs" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ab2d0d60-5444-4e8b-ab6e-00f1f6844801" x="0" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Par jour]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2d78ddec-4516-4c3f-be06-cfb2c6ee3f40" style="style1" x="0" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6d26a90f-6fe4-49fc-8288-b776dc10d610" style="style1" x="100" y="0" width="162" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nombre d'ouvrage contrôlés]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a0704517-a339-46d1-83d2-ebeab6c1e9c4" style="style1" x="262" y="0" width="165" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Secteurs]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e6d892a0-ab64-4c3b-8cbf-7537f5680e59" style="style1" x="0" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f94f472a-7977-4d16-87cd-2bc865724f58" style="style1" x="100" y="0" width="162" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nbouvrage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a511c8df-5bf2-4228-97e1-e146cee2a69f" style="style1" x="262" y="0" width="165" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{secteurs}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Immediate"/>
+	</summary>
+</jasperReport>
